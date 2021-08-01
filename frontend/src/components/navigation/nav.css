@@ -1,0 +1,33 @@
+@media only screen and (max-width: 600px) {
+  nav {
+    display: none;
+  }
+}
+.nav-container {
+  padding-right: 16px;
+}
+.item {
+  display: flex;
+  align-items: center;
+
+  padding-right: 10px;
+}
+.item li {
+  margin: 10px;
+
+  font-size: 20px;
+  color: white;
+  list-style: none;
+}
+#icon {
+  font-size: 30px;
+  color: white;
+}
+#icon2 {
+  font-size: 30px;
+  color: white;
+}
+#icon3 {
+  font-size: 30px;
+  color: white;
+}
