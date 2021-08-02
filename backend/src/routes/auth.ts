@@ -19,6 +19,7 @@ route.post(
       await createAccount(user);
       res.status(201).json(signup.success());
     } catch (error) {
+      console.log(error);
       res.status(409).json(signup.failed(error));
     }
   }
@@ -30,7 +31,7 @@ route.post("/login", async (req, res) => {
   if (account != null) {
     try {
       await compare(user.password, account.password);
-      let profile: object = await getProfile(account.userId);
+      let profile: object = await getProfile(account.id);
       res.status(200).json(login.success(profile));
     } catch (error) {
       res.status(401).json(login.failed("unauthorize"));

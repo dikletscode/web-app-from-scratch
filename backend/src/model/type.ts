@@ -9,6 +9,7 @@ export type UserLogin = {
 };
 
 export interface TermSeller {
+  nameStore: string;
   noKtp: string;
   province: string;
   city: string;
@@ -18,7 +19,7 @@ export interface TermSeller {
 export interface Product {
   productName: string;
   price: number;
-  addressId: string;
+  addressId: number;
   total: number;
   star: number;
 }

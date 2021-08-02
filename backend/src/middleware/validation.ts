@@ -8,12 +8,11 @@ export const rulesSignup = () => {
   ];
 };
 export const rulesLogin = () => {
-    return [
-      body("username").isLength({ min: 5 }),
-      body("email").isEmail(),
-      body("password").notEmpty().isLength({ min: 6 }),
-    ];
-  };
+  return [
+    body("username").isLength({ min: 5 }),
+    body("password").notEmpty().isLength({ min: 6 }),
+  ];
+};
 export const validate = (req: any, res: any, next: any) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {

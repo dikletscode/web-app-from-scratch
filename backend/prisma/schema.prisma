@@ -17,7 +17,7 @@ model role{
 }
 
 model user{
-  userId String @id @default(uuid())
+  id String @id @default(uuid())
   username String @unique
   email String @unique
   password String 
@@ -29,42 +29,44 @@ model user{
 }
 
 model profile{
-  profileId Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   userId String
   fullname String? 
   address String?
   images String? @db.VarChar(300)
   noTelp String?
-  sellerTerms forSeller?
-  user user @relation(fields: [userId],references:[userId])
+  detailForSeller dataSeller?
+  user user @relation(fields: [userId],references:[id])
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
-model storeAddress{
-  addressId Int @id @default(autoincrement())
+model dataSeller{
+  id Int @id @default(autoincrement())
+  profileId Int @unique
+  sellerProfile profile @relation(fields: [profileId],references:[id])
+  noKtp String @db.Char(16)
+  storeAdress storeInfo?
+}
+
+model storeInfo{
+  id Int @id @default(autoincrement())
+  nameStore String @unique
   province String
   city String
   address String
-  detailId Int
-  etalase etalaseSeller[]
-  detailSeller forSeller @relation(fields: [detailId],references:[detailId])
+  sellerId Int
+  etalase productSeller[]
+  detailSeller dataSeller @relation(fields: [sellerId],references:[id])
 }
-
-model forSeller{
-  detailId Int @id @default(autoincrement())
-  profile Int @unique
-  sellerProfile profile @relation(fields: [profile],references:[profileId])
-  noKtp String @db.Char(16)
-  storeAdress storeAddress?
-}
-
-model etalaseSeller{
+model productSeller{
     id Int @id @default(autoincrement())
     productName String
     price Int
-    addressId Int
-    storeAddress storeAddress @relation(fields: [addressId],references:[addressId])
+    storeId Int
+    storeAddress storeInfo @relation(fields: [storeId],references:[id])
     total Int @default(0)
     star Int @db.TinyInt @default(0)
 }
+
+
 

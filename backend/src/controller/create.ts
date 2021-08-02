@@ -21,12 +21,13 @@ export const createAccount = async (obj: User) => {
 };
 
 export const createTbSeller = (obj: TermSeller, id: number) => {
-  return prisma.forSeller.create({
+  return prisma.dataSeller.create({
     data: {
       noKtp: obj.noKtp,
-      sellerProfile: { connect: { profileId: id } },
+      sellerProfile: { connect: { id: id } },
       storeAdress: {
         create: {
+          nameStore: obj.nameStore,
           address: obj.address,
           city: obj.city,
           province: obj.province,
@@ -36,13 +37,13 @@ export const createTbSeller = (obj: TermSeller, id: number) => {
   });
 };
 
-export const createProduct = (obj: Product, addressId: number) => {
-  prisma.etalaseSeller.create({
+export const createProduct = (obj: Product, profileId: number) => {
+  return prisma.productSeller.create({
     data: {
       productName: obj.productName,
       price: obj.price,
       total: obj.total,
-      storeAddress: { connect: { addressId: addressId } },
+      storeAddress: { connect: { id: profileId } },
     },
   });
 };

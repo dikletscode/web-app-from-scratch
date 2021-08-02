@@ -1,5 +1,5 @@
 import { PrismaClient } from ".prisma/client";
-import { profile } from "@prisma/client";
+import { dataSeller, profile } from "@prisma/client";
 import { UserLogin } from "../model/type";
 const prisma = new PrismaClient();
 
@@ -13,9 +13,9 @@ export const getAccount = async (obj: UserLogin) => {
 
 export const getProfile = async (id: string): Promise<any> => {
   return await prisma.user.findUnique({
-    where: { userId: id },
+    where: { id: id },
     select: {
-      userId: true,
+      id: true,
       username: true,
       email: true,
       role: true,
@@ -25,6 +25,12 @@ export const getProfile = async (id: string): Promise<any> => {
 };
 export const getDetail = async (id: number): Promise<profile | null> => {
   return await prisma.profile.findUnique({
-    where: { profileId: id },
+    where: { id: id },
+  });
+};
+export const getSellerInfo = async (id: number): Promise<dataSeller | null> => {
+  return await prisma.dataSeller.findUnique({
+    where: { id: id },
+    include: { storeAdress: true },
   });
 };

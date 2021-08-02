@@ -11,7 +11,7 @@ export const updateProfile = async (obj: Profile, profileId: number) => {
       noTelp: obj.noTelp,
     },
     where: {
-      profileId: profileId,
+      id: profileId,
     },
   });
 };
@@ -22,7 +22,7 @@ export const updateImage = async (images: string, profileId: number) => {
       images: images,
     },
     where: {
-      profileId: profileId,
+      id: profileId,
     },
   });
 };
@@ -32,6 +32,6 @@ export const sellerRegister = async (userId: string) => {
     data: {
       roleId: 1,
     },
-    where: { userId: userId },
+    where: { id: userId },
   });
 };

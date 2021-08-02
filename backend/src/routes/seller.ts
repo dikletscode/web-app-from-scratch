@@ -4,6 +4,7 @@ import { getDetail } from "../controller/read";
 import { sellerRegister } from "../controller/update";
 import { TermSeller } from "../model/type";
 const route = Router();
+
 const isAdmin = (obj: object): boolean => {
   for (let [_key, value] of Object.entries(obj)) {
     if (value == null) {

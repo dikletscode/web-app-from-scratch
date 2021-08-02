@@ -9,7 +9,7 @@ CREATE TABLE `role` (
 
 -- CreateTable
 CREATE TABLE `user` (
-    `userId` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
@@ -19,12 +19,12 @@ CREATE TABLE `user` (
 
     UNIQUE INDEX `user.username_unique`(`username`),
     UNIQUE INDEX `user.email_unique`(`email`),
-    PRIMARY KEY (`userId`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `profile` (
-    `profileId` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` VARCHAR(191) NOT NULL,
     `fullname` VARCHAR(191),
     `address` VARCHAR(191),
@@ -34,37 +34,41 @@ CREATE TABLE `profile` (
     `updateAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `profile_userId_unique`(`userId`),
-    PRIMARY KEY (`profileId`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `storeAddress` (
-    `addressId` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE `dataSeller` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `profileId` INTEGER NOT NULL,
+    `noKtp` CHAR(16) NOT NULL,
+
+    UNIQUE INDEX `dataSeller.profileId_unique`(`profileId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `storeInfo` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `nameStore` VARCHAR(191) NOT NULL,
     `province` VARCHAR(191) NOT NULL,
     `city` VARCHAR(191) NOT NULL,
     `address` VARCHAR(191) NOT NULL,
-    `detailId` INTEGER NOT NULL,
+    `sellerId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `storeAddress_detailId_unique`(`detailId`),
-    PRIMARY KEY (`addressId`)
+    UNIQUE INDEX `storeInfo.nameStore_unique`(`nameStore`),
+    UNIQUE INDEX `storeInfo_sellerId_unique`(`sellerId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `forSeller` (
-    `detailId` INTEGER NOT NULL AUTO_INCREMENT,
-    `noKtp` CHAR(16) NOT NULL,
-
-    PRIMARY KEY (`detailId`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `etalaseSeller` (
+CREATE TABLE `productSeller` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `productName` VARCHAR(191) NOT NULL,
     `price` INTEGER NOT NULL,
-    `addressId` INTEGER NOT NULL,
+    `storeId` INTEGER NOT NULL,
     `total` INTEGER NOT NULL DEFAULT 0,
-    `star` TINYINT NOT NULL,
+    `star` TINYINT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -73,10 +77,13 @@ CREATE TABLE `etalaseSeller` (
 ALTER TABLE `user` ADD FOREIGN KEY (`roleId`) REFERENCES `role`(`roleId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `profile` ADD FOREIGN KEY (`userId`) REFERENCES `user`(`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `profile` ADD FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `storeAddress` ADD FOREIGN KEY (`detailId`) REFERENCES `forSeller`(`detailId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `dataSeller` ADD FOREIGN KEY (`profileId`) REFERENCES `profile`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `etalaseSeller` ADD FOREIGN KEY (`addressId`) REFERENCES `storeAddress`(`addressId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `storeInfo` ADD FOREIGN KEY (`sellerId`) REFERENCES `dataSeller`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `productSeller` ADD FOREIGN KEY (`storeId`) REFERENCES `storeInfo`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
