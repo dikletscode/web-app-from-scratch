@@ -1,6 +1,6 @@
 import { PrismaClient } from ".prisma/client";
 import { dataSeller, profile } from "@prisma/client";
-import { UserLogin } from "../model/type";
+import { UserLogin } from "../types/type";
 const prisma = new PrismaClient();
 
 export const getAccount = async (obj: UserLogin) => {

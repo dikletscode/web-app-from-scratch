@@ -1,4 +1,5 @@
 import { body, validationResult } from "express-validator";
+import { Request, Response, NextFunction } from "express";
 
 export const rulesSignup = () => {
   return [
@@ -13,7 +14,7 @@ export const rulesLogin = () => {
     body("password").notEmpty().isLength({ min: 6 }),
   ];
 };
-export const validate = (req: any, res: any, next: any) => {
+export const validate = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     return next();

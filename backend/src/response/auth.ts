@@ -1,13 +1,25 @@
-export const login = {
-  success: (data: object) => {
-    return { isLogin: true, result: data, token: null, err: null };
+export const loginMessage = {
+  success: (data: object, token: string, refreshToken: string) => {
+    return {
+      isLogin: true,
+      result: data,
+      token: token,
+      refreshToken: refreshToken,
+      err: null,
+    };
   },
   failed: (err: any) => {
-    return { isLogin: false, result: null, token: null, err: err };
+    return {
+      isLogin: false,
+      result: null,
+      token: null,
+      refreshToken: null,
+      err: err,
+    };
   },
 };
 
-export const signup = {
+export const signupMessage = {
   success: () => {
     return { messages: "account created successfully" };
   },

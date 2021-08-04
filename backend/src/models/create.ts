@@ -1,13 +1,11 @@
 import { PrismaClient } from ".prisma/client";
-import { TermSeller, Product, User } from "../model/type";
+import { User } from "../types/type";
+import { TermSeller, Product } from "../types/type";
 
 const prisma = new PrismaClient();
 
-import bcrypt from "bcrypt";
-
-export const createAccount = async (obj: User) => {
-  let hash = await bcrypt.hash(obj.password, 10);
-  return await prisma.user.create({
+export const createAccount = (obj: User, hash: string) => {
+  return prisma.user.create({
     data: {
       username: obj.username,
       email: obj.email,
