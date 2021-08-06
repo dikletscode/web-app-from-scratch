@@ -3,6 +3,8 @@ import route from "./routes/auth";
 import profile from "./routes/profile";
 import seller from "./routes/seller";
 import redis from "redis";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 const app = express();
 
 export const client = redis.createClient({
@@ -14,8 +16,17 @@ client.on("ready", () => {
   console.log("connected to redis");
 });
 
+app.use(
+  cors({
+    origin: "http://localhost:2002",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 app.use("/", route);
 app.use("/profile", profile);
 app.use("/seller", seller);

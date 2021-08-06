@@ -1,5 +1,6 @@
 import React from "react";
 import { styles } from "../style/form.style";
+import { Link } from "react-router-dom";
 
 const Aggreement = () => {
   return (
@@ -12,7 +13,7 @@ const Aggreement = () => {
         <br />
       </div>
       <div style={{ textAlign: "center" }}>
-        <input type="submit" style={styles.button} />
+        <input type="submit" style={styles.button} value="submit" />
       </div>
     </>
   );
@@ -23,7 +24,9 @@ export const AdditionalSignup = () => {
     <>
       <Aggreement />
       <div style={{ textAlign: "center" }}>
-        <p>have an account?</p>
+        <p>
+          have an account? <Link to="/login">login</Link>
+        </p>
       </div>
     </>
   );
@@ -33,7 +36,9 @@ export const AdditionalLogin = () => {
     <>
       <Aggreement />
       <div style={{ textAlign: "center" }}>
-        <p>dont have an account?</p>
+        <p>
+          dont have an account? <Link to="/signup">signup</Link>
+        </p>
       </div>
     </>
   );

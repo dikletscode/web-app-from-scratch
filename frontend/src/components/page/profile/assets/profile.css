@@ -1,0 +1,23 @@
+.info-transac {
+  padding: 80px;
+}
+
+.nav-litle ul {
+  padding-top: 40px;
+  display: flex;
+  list-style: none;
+}
+.nav-litle ul li {
+  padding: 30px;
+}
+.mydata {
+  padding-left: 50px;
+}
+
+.button-seller:hover {
+  background: linear-gradient(45deg, transparent 5%, #ffffff 5%);
+  color: black;
+  font-size: 1em;
+  box-shadow: 6px 0px 0px #00e6f6;
+  outline: transparent;
+}

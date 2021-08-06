@@ -29,7 +29,7 @@ export const createAccessToken = (id: string): Promise<any> => {
       { id: id },
       <string>process.env.SECRET_TOKEN,
       {
-        expiresIn: "1m",
+        expiresIn: "15m",
       },
       (err, encode) => {
         if (err) reject(err);

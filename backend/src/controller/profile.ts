@@ -3,6 +3,18 @@ import upload from "../helper/setMulter";
 import { Profile } from "../types/type";
 import { editProfile, updateImage } from "../models/update";
 import { messageUpdate } from "../response/profile";
+import { getProfile } from "../models/read";
+
+export const readProfile = async (req: Request, res: Response) => {
+  let id = req.params.id;
+  try {
+    let profile = await getProfile(id);
+
+    res.status(200).json({ result: profile });
+  } catch (error) {
+    res.status(400).json({ result: null });
+  }
+};
 
 export const updateProfile = async (req: Request, res: Response) => {
   let id = req.params.id;

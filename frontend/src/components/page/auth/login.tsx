@@ -1,7 +1,7 @@
 import React from "react";
-import Logo from "../../../assets/images.jpeg";
-import { style } from "./style/login.style";
-import Form from "../authcomponent/formlogin";
+import Logo from "../../assets/images.jpeg";
+import { style } from "./auth.style";
+import Form from "./authcomponent/formlogin";
 
 const Login = (): JSX.Element => {
   return (

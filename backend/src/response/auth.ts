@@ -1,20 +1,16 @@
 export const loginMessage = {
-  success: (data: object, token: string, refreshToken: string) => {
+  success: (data: object) => {
     return {
       isLogin: true,
       result: data,
-      token: token,
-      refreshToken: refreshToken,
-      err: null,
+      error: null,
     };
   },
   failed: (err: any) => {
     return {
       isLogin: false,
       result: null,
-      token: null,
-      refreshToken: null,
-      err: err,
+      error: err,
     };
   },
 };
