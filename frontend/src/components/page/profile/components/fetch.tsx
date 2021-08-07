@@ -1,39 +1,53 @@
 import React, { useEffect, useState, useContext, EffectCallback } from "react";
-import axios from "axios";
 import { Profile } from "./profile";
 import { getProfile } from "../../../../services/profile.service";
+import { ProfileTypes, ProfileDb } from "../../../../services/profile.service";
+import { useDispatch } from "react-redux";
+import { setData, User } from "../../../../reducer/auth";
 
-export interface ProfileTypes {
-  email: string;
-  profile: {
-    address: string;
-    fullname: string;
-    images: string;
-    notelp: string;
-  };
-  role: object;
-}
+localStorage.getItem("userId");
 
 const DataFetch = ({ name }: any) => {
   const [profile, setProfile] = useState<ProfileTypes[]>([]);
+  const [mainInfo, setMainInfo] = useState<User[]>([
+    {
+      image: "",
+      username: "",
+    },
+  ]);
+  const dispatch = useDispatch();
   const getData = async () => {
     try {
-      let data = await getProfile("7c34aa6d-2598-47f5-a795-a30911eabb1a");
-      setProfile(() => [data.data.result]);
+      let data = await getProfile();
+      let arr: ProfileTypes = data.result;
+      let arr2: ProfileDb = data.result;
+      setMainInfo(() => [
+        {
+          username: arr2.username,
+          image: arr2.profile.images,
+        },
+      ]);
+      setProfile(() => [arr]);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(profile, "pro");
 
   useEffect(() => {
     getData();
-  }, []);
+    dispatch(setData(mainInfo[0]));
+  }, [mainInfo[0].image]);
+
+  console.log(mainInfo, "aspoasd");
 
   if (profile === undefined || profile.length == 0) {
     return <></>;
-  } else {
+  }
+
+  if (name == "bio") {
     return <Profile profile={profile} />;
+  } else {
+    return <></>;
   }
 };
 

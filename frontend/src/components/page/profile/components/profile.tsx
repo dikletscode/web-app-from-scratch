@@ -1,112 +1,125 @@
-import React, { useEffect, useState, ChangeEvent, FC } from "react";
+import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { updateProfile } from "../../../../services/profile.service";
 
-import foto from "../assets/3.png";
+import foto from "../assets/1.png";
 import "../assets/profile.css";
-import { EdiProfile, HandleImage } from "./input";
-import { ProfileTypes } from "./fetch";
+import { HandleImage, Row } from "./input";
+import { ProfileTypes } from "../../../../services/profile.service";
 import style from "../assets/profile.style";
 
-export const Profile = (props: { profile: ProfileTypes[] }) => {
-  const [isEditing, setIsEditing] = useState({
-    fullName: false,
-    address: false,
-    noTelp: false,
-  });
+interface Toogle {
+  fullname: boolean;
+  address: boolean;
+  noTelp: boolean;
+}
+const ToogleInit: Toogle = {
+  fullname: false,
+  address: false,
+  noTelp: false,
+};
 
+export const Profile = (props: { profile: ProfileTypes[] }) => {
+  const [isEditing, setEdit] = useState<Toogle>(ToogleInit);
   const [data, setData] = useState(props.profile);
   const [img, setImg] = useState(props.profile);
+  const updateData = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const update = async () => {
+      try {
+        await updateProfile(data[0].profile.id, data);
+        setEdit(ToogleInit);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    update();
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const dataOnChange = { ...data, [e.target.id]: e.target.value };
+    const dataOnChange: ProfileTypes[] = [
+      {
+        ...data[0],
+        ["profile"]: { ...data[0].profile, [e.target.id]: e.target.value },
+      },
+    ];
     setData(dataOnChange);
   };
   const imageOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const dataOnChange = { ...img, [e.target.id]: e.target.files[0] };
+      const dataOnChange: ProfileTypes[] = [
+        {
+          ...data[0],
+          ["profile"]: { ...data[0].profile, ["images"]: e.target.files[0] },
+        },
+      ];
       setImg(dataOnChange);
     }
   };
-  console.log(data);
+  const klik = (name: string) => {
+    setEdit({ ...isEditing, [name]: true });
+  };
+  console.log(img);
 
   return (
     <>
       {data.map((info: any) => {
         return (
-          <div style={style.infoData}>
-            <div className="foto">
+          <div style={style.infoData} key={info.username}>
+            <div style={style.content}>
               <label style={style.upload}>
+                <img
+                  src={`http://localhost:2021/uploads/${info.profile.images}`}
+                  style={style.avatar}
+                />
                 <HandleImage
-                  change={(e: any) => imageOnChange(e)}
-                  id="images"
-                  value={img}
+                  change={imageOnChange}
+                  profileId={info.profile.id}
+                  data={img[0].profile.images}
                 />
               </label>
-              <br />
-              Upload Image
             </div>
             <div className="mydata">
               <h3> change your information</h3>
               <table>
                 <tbody>
                   <tr>
-                    <td>FullName </td>
-                    {isEditing.fullName ? (
-                      <td>
-                        <EdiProfile
-                          value={data[0].profile.fullname}
-                          change={(e: any) => handleChange(e)}
-                          id="fullName"
-                          data={data}
-                        />
-                      </td>
-                    ) : (
-                      <td>: {info.profile.fullname}</td>
-                    )}
-                    <td>
-                      <button>edit</button>
-                    </td>
-                  </tr>
-                  <tr>
                     <td>Username </td>
                     <td>: {info.username}</td>
                   </tr>
+                  <Row
+                    id="fullname"
+                    value={data[0].profile.fullname}
+                    change={handleChange}
+                    submit={updateData}
+                    type="text"
+                    fieldValue={info.profile.fullname}
+                    editToogle={() => klik("fullname")}
+                    isEditing={isEditing.fullname}
+                    fieldTitle="Fullname"
+                  />
+                  <Row
+                    id="address"
+                    value={data[0].profile.address}
+                    change={handleChange}
+                    submit={updateData}
+                    type="text"
+                    fieldValue={info.profile.address}
+                    editToogle={() => klik("address")}
+                    isEditing={isEditing.address}
+                    fieldTitle="Address"
+                  />
+                  <Row
+                    id="noTelp"
+                    value={data[0].profile.noTelp}
+                    change={handleChange}
+                    submit={updateData}
+                    type="number"
+                    fieldValue={info.profile.noTelp}
+                    editToogle={() => klik("noTelp")}
+                    isEditing={isEditing.noTelp}
+                    fieldTitle="No Telephone"
+                  />
 
-                  <tr>
-                    <td>Address</td>
-                    {isEditing.address ? (
-                      <td>
-                        <EdiProfile
-                          value={data[0].profile.address}
-                          change={(e: any) => handleChange(e)}
-                          id="address"
-                          data={data}
-                        />
-                      </td>
-                    ) : (
-                      <td>: {info.profile.address}</td>
-                    )}
-                    <td>
-                      <button>edit</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>No Telephone</td>
-                    {isEditing.noTelp ? (
-                      <td>
-                        <EdiProfile
-                          value={data[0].profile.notelp}
-                          change={(e: any) => handleChange(e)}
-                          id="noTelp"
-                          data={data}
-                        />
-                      </td>
-                    ) : (
-                      <td>: {info.profile.notelp}</td>
-                    )}
-                    <td>
-                      <button>edit</button>
-                    </td>
-                  </tr>
                   <tr>
                     <td></td>
                     <td></td>

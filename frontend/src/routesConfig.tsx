@@ -1,4 +1,6 @@
-import { isLogin } from "./helper/isLogin";
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
+
 import {
   Route,
   Redirect,
@@ -8,30 +10,26 @@ import {
 import React from "react";
 
 export interface RouteProps {
-  component?:
-    | React.ComponentType<RouteComponentProps<any>>
-    | React.ComponentType<any>;
-  render?: (props: RouteComponentProps<any>) => React.ReactNode;
-  children?:
-    | ((props: RouteChildrenProps<any>) => React.ReactNode)
-    | React.ReactNode;
+  component?: React.ComponentType<any>;
   path?: string | string[];
   exact?: boolean;
-  sensitive?: boolean;
   strict?: boolean;
+  redirectTo: string;
 }
 export const PrivateRoute = ({
   component: Component,
+  redirectTo,
   ...atribute
 }: RouteProps) => {
   if (!Component) {
     return null;
   }
+  const loginStatus = useSelector((state: RootState) => state.auth);
   return (
     <Route
       {...atribute}
       render={(props) =>
-        isLogin() ? <Component {...props} /> : <Redirect to="/login" />
+        loginStatus ? <Component {...props} /> : <Redirect to={redirectTo} />
       }
     />
   );
@@ -39,16 +37,22 @@ export const PrivateRoute = ({
 export const PublicRoute = ({
   component: Component,
   strict,
+  redirectTo,
   ...atribute
 }: RouteProps) => {
   if (!Component) {
     return null;
   }
+  const loginStatus = useSelector((state: RootState) => state.auth);
   return (
     <Route
       {...atribute}
       render={(props) =>
-        isLogin() && strict ? <Redirect to="/" /> : <Component {...props} />
+        loginStatus && strict ? (
+          <Redirect to={redirectTo} />
+        ) : (
+          <Component {...props} />
+        )
       }
     />
   );

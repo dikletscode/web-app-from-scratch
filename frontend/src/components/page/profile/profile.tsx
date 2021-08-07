@@ -5,19 +5,27 @@ import style from "./assets/profile.style";
 import { List } from "./assets/menu";
 
 import { useLocation, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
 
 const Personal = () => {
+  const mainInfo = useSelector((state: RootState) => state.auth.userInfo);
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
+  console.log(mainInfo, "asd");
   let query = useQuery();
 
   return (
     <>
       <div style={style.info}>
         <div className="info-transac">
-          <img alt="" style={{ height: "80px", borderRadius: "100px" }} />
-          <p>Isyana</p>
+          <img
+            alt=""
+            src={`http://localhost:2021/uploads/${mainInfo.image}`}
+            style={{ height: "80px", borderRadius: "100px" }}
+          />
+          <p>{mainInfo.username}</p>
           <div>
             <p>kotak masuk</p>
             <p>Chat</p>
@@ -29,7 +37,6 @@ const Personal = () => {
           <nav>
             <ul style={style.navBar}>{List}</ul>
           </nav>
-
           <DataFetch name={query.get("tab")} />
         </div>
       </div>

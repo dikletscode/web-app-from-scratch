@@ -6,6 +6,17 @@
 .nav-container {
   padding-right: 16px;
 }
+header {
+  background-color: #d62828;
+  padding: 3px;
+  display: flex;
+
+  justify-content: space-between;
+  color: white;
+  height: 80px;
+  padding-left: 20px;
+  font-family: "Source Sans Pro", sans-serif;
+}
 .item {
   display: flex;
   align-items: center;

@@ -7,6 +7,10 @@ const info = {
   overflow: "auto",
   fontSize: "1em",
 } as React.CSSProperties;
+const avatar = {
+  height: "auto",
+  width: "100%",
+} as React.CSSProperties;
 
 const infoPersonal = {
   display: "flex",
@@ -19,7 +23,9 @@ const navBar = {
   display: "flex",
   listStyle: "none",
 } as React.CSSProperties;
-
+const content = {
+  width: "140px",
+} as React.CSSProperties;
 const upload = {
   border: "1px solid #ccc",
   display: "inline-block",
@@ -29,6 +35,7 @@ const upload = {
 
 const infoData = {
   display: "flex",
+  padding: 0,
 } as React.CSSProperties;
 
 const buttonSeller = {
@@ -44,6 +51,8 @@ const buttonSeller = {
 
 export default {
   info,
+  avatar,
+  content,
   infoPersonal,
   navBar,
   upload,

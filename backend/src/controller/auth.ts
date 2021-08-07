@@ -11,6 +11,7 @@ import bcrypt from "bcrypt";
 import { createAccount } from "../models/create";
 import { getAccount } from "../models/read";
 import { cookieOption } from "../helper/cookieOption";
+import { client } from "../index";
 
 require("dotenv").config();
 
@@ -31,6 +32,9 @@ export const logout = async (req: Request, res: Response) => {
   req.cookies.name = "refreshToken";
   res.clearCookie("secret");
   res.clearCookie("refreshToken");
+  client.del("userId", (_err, ok) => {
+    console.log(ok);
+  });
   res.json({ message: "logout" });
 };
 

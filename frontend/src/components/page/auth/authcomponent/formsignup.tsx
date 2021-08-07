@@ -3,16 +3,11 @@ import { Input } from "./microComponent/input";
 import { styles } from "./style/form.style";
 import { AdditionalSignup } from "./microComponent/additional";
 import authServices from "../../../../services/auth.service";
-
-export interface Signup {
-  username: string;
-  email: string;
-  password: string;
-}
+import { SignUpTypes } from "../../../../services/auth.service";
 
 export const Form = () => {
   const [msg, setMsg] = useState("");
-  const [data, setData] = useState({
+  const [data, setData] = useState<SignUpTypes>({
     username: "",
     email: "",
     password: "",
@@ -29,7 +24,10 @@ export const Form = () => {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const dataOnChange: Signup = { ...data, [e.target.id]: e.target.value };
+    const dataOnChange: SignUpTypes = {
+      ...data,
+      [e.target.id]: e.target.value,
+    };
     setData(dataOnChange);
   };
 

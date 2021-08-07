@@ -6,6 +6,7 @@ import redis from "redis";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
+import path from "path";
 
 export const client = redis.createClient({
   host: "localhost",
@@ -26,6 +27,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "../public/images/")));
 
 app.use("/", route);
 app.use("/profile", profile);

@@ -4,35 +4,34 @@ import { styles } from "./style/form.style";
 import { AdditionalLogin } from "./microComponent/additional";
 import { Redirect } from "react-router-dom";
 import auth from "../../../../services/auth.service";
-
-export interface Login {
-  usernameOrEmail: string;
-  password: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin } from "../../../../reducer/auth";
+import { RootState } from "../../../../store";
+import { LoginTypes } from "../../../../services/auth.service";
 
 const Form = () => {
-  const [isLogin, setLogin] = useState(false);
+  const loginStatus = useSelector((state: RootState) => state.auth.isLogin);
+  const dispatch = useDispatch();
   const [msg, setMsg] = useState("");
-  const [data, setData] = useState<Login>({
+  const [data, setData] = useState<LoginTypes>({
     usernameOrEmail: "",
     password: "",
   });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const dataOnChange: Login = { ...data, [e.target.id]: e.target.value };
+    const dataOnChange: LoginTypes = { ...data, [e.target.id]: e.target.value };
     setData(dataOnChange);
   };
 
   const loginSubmit = async () => {
     try {
-      let datas: Login = await auth.login(data);
-      setLogin(true);
-
-      // localStorage.setItem("data", JSON.stringify(datas));
+      await auth.login(data);
+      dispatch(setLogin(true));
     } catch (error) {
       setMsg(error.response.data.error);
-      setLogin(false);
+      dispatch(setLogin(false));
     }
   };
+
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     loginSubmit();
@@ -40,7 +39,7 @@ const Form = () => {
 
   return (
     <>
-      {isLogin == true ? (
+      {loginStatus == true ? (
         <Redirect to="/" />
       ) : (
         <div style={styles.container}>

@@ -23,6 +23,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     await editProfile(userInput, parseInt(id));
     res.status(200).json(messageUpdate.success);
   } catch (error) {
+    console.log(error);
     res.status(400).json(messageUpdate.failed);
   }
 };
@@ -31,7 +32,7 @@ export const updateProfileImages = (req: Request, res: Response) => {
   let id = req.params.id;
   upload(req, res, async (err) => {
     try {
-      console.log(err);
+      console.log(req);
       let nameImages: Profile["images"] = req.file?.filename;
       if (nameImages != undefined) {
         await updateImage(nameImages, parseInt(id));

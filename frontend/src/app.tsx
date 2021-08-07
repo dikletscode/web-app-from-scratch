@@ -7,19 +7,41 @@ import "./app.css";
 import { Product } from "./components/page/product/mainProduct";
 import { PublicRoute, PrivateRoute } from "./routesConfig";
 import Personal from "./components/page/profile/profile";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLogin } from "./reducer/auth";
+export const id = localStorage.getItem("userId");
 
 const App = (): JSX.Element => {
+  const isLogin = id == null || id == "" ? false : true;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setLogin(isLogin));
+  }, [id]);
+  console.log(isLogin, "test");
   return (
     <Router>
-      <header>
-        <h1>Hello</h1>
-        <Nav />
-      </header>
+      <Nav />
       <Switch>
-        <PrivateRoute component={Personal} exact path="/profile" />
-        <PublicRoute strict={true} component={Login} exact path="/login" />
-        <PublicRoute component={Product} strict={true} exact path="/" />
+        <PublicRoute
+          component={Product}
+          strict={false}
+          path="/"
+          exact
+          redirectTo="/login"
+        />
+        <PublicRoute
+          strict={false}
+          component={Login}
+          path="/login"
+          redirectTo="/"
+        />
 
+        <PrivateRoute
+          component={Personal}
+          path="/profile"
+          redirectTo="/login"
+        />
         <Route component={Signup} path="/signup" />
       </Switch>
     </Router>

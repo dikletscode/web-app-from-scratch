@@ -1,10 +1,10 @@
 import axiosInstance from "../config/axiosInstance";
 
-interface LoginTypes {
+export interface LoginTypes {
   usernameOrEmail: string;
   password: string;
 }
-interface SignUpTypes {
+export interface SignUpTypes {
   username: string;
   email: string;
   password: string;
@@ -16,6 +16,7 @@ const logout = () => {
       .get("/logout")
       .then((res) => {
         resolve(res);
+        localStorage.removeItem("userId");
       })
       .catch((err) => {
         reject(err);
