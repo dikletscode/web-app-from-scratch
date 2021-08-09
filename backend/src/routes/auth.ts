@@ -6,7 +6,7 @@ const route = Router();
 
 route.post("/signup", rulesSignup(), validate, signup);
 route.post("/login", rulesLogin(), validate, login);
-route.get("/logout", validate, logout);
+route.get("/logout/:id", validate, logout);
 route.get("/refreshToken", refreshToken);
 
 export default route;

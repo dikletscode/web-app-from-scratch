@@ -32,7 +32,6 @@ export const updateProfileImages = (req: Request, res: Response) => {
   let id = req.params.id;
   upload(req, res, async (err) => {
     try {
-      console.log(req);
       let nameImages: Profile["images"] = req.file?.filename;
       if (nameImages != undefined) {
         await updateImage(nameImages, parseInt(id));

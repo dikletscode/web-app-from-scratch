@@ -1,31 +1,16 @@
 import React from "react";
 
-const info = {
-  display: "flex",
-  paddingTop: "0px",
-  flexDirection: "row",
-  overflow: "auto",
-  fontSize: "1em",
-} as React.CSSProperties;
 const avatar = {
-  height: "auto",
-  width: "100%",
+  height: "100px",
+  width: "100px",
+  borderRadius: "50%",
+  objectFit: "cover",
 } as React.CSSProperties;
 
-const infoPersonal = {
-  display: "flex",
-  flexDirection: "column",
-  paddingTop: "0px",
-} as React.CSSProperties;
-
-const navBar = {
-  paddingTop: "40px",
-  display: "flex",
-  listStyle: "none",
-} as React.CSSProperties;
 const content = {
   width: "140px",
 } as React.CSSProperties;
+
 const upload = {
   border: "1px solid #ccc",
   display: "inline-block",
@@ -35,7 +20,10 @@ const upload = {
 
 const infoData = {
   display: "flex",
-  padding: 0,
+  justifyContent: "space-evenly",
+  width: "100%",
+
+  alignContent: "space-evenly",
 } as React.CSSProperties;
 
 const buttonSeller = {
@@ -50,11 +38,9 @@ const buttonSeller = {
 } as React.CSSProperties;
 
 export default {
-  info,
   avatar,
   content,
-  infoPersonal,
-  navBar,
+
   upload,
   infoData,
   buttonSeller,

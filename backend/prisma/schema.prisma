@@ -63,6 +63,7 @@ model productSeller{
     productName String
     price Int
     storeId Int
+    images String @db.VarChar(300)
     storeAddress storeInfo @relation(fields: [storeId],references:[id])
     total Int @default(0)
     star Int @db.TinyInt @default(0)

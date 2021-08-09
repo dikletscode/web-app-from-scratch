@@ -1,5 +1,5 @@
 import axiosInstance from "../config/axiosInstance";
-import { id } from "../app";
+import { getUserId } from "../helper/localstorage";
 
 export interface ProfileTypes {
   email: string;
@@ -13,18 +13,21 @@ export interface ProfileTypes {
   };
   role: object;
 }
+
 export interface ProfileDb extends Omit<ProfileTypes, "profile"> {
   username: string;
   profile: {
     images: string;
   };
 }
+let id = getUserId();
 
 export const getProfile = (): Promise<any> => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .get(`/profile/${id}`)
       .then((res) => {
+        console.log(res.data);
         resolve(res.data);
       })
       .catch((err) => {

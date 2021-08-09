@@ -28,11 +28,13 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const logout = async (req: Request, res: Response) => {
+  let id = req.params.id;
   req.cookies.name = "secret";
   req.cookies.name = "refreshToken";
   res.clearCookie("secret");
   res.clearCookie("refreshToken");
-  client.del("userId", (_err, ok) => {
+  client.del(id, (err, ok) => {
+    if (err) console.log(err);
     console.log(ok);
   });
   res.json({ message: "logout" });
@@ -47,19 +49,21 @@ export const login = async (req: Request, res: Response) => {
       await compare(user.password, account.password);
       const token = await createAccessToken(account.id);
       const refreshToken = await createRefreshToken(account.id);
-      console.log(refreshToken, "lama");
-      let data = {
-        id: account.id,
-        username: account.username,
-        email: account.email,
-        role: account.roleId,
-      };
+      let data: object;
+      if (account.roleId == 2) {
+        data = {
+          id: account.id,
+        };
+      } else {
+        data = {
+          id: account.id,
+          storeId: account.profile?.detailForSeller?.storeAdress?.id,
+        };
+      }
       var date = new Date();
       date.setTime(date.getTime() + 60 * 60 * 24 * 1000);
-
       res.cookie("secret", token, cookieOption);
       res.cookie("refreshToken", refreshToken, cookieOption);
-
       res.status(200).json(loginMessage.success(data));
     } catch (error) {
       console.log(error);

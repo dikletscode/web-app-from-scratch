@@ -4,7 +4,7 @@ import {
   ProfileTypes,
   updateImages,
   updateProfile,
-} from "../../../../services/profile.service";
+} from "../../../../../services/profile.service";
 
 interface Props {
   id: string;
@@ -94,7 +94,7 @@ export const HandleImage: FC<Image> = ({ change, profileId, data }) => {
         accept="image/"
       />
       <br />
-      <button type="submit">upload</button>
+      <button type="submit">Choose Photo</button>
     </form>
   );
 };

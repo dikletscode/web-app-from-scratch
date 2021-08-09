@@ -10,15 +10,19 @@ import Personal from "./components/page/profile/profile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLogin } from "./reducer/auth";
-export const id = localStorage.getItem("userId");
+import { useState } from "react";
+
+import Etalase from "./components/page/myStore/etalase";
+import { getUserId } from "./helper/localstorage";
 
 const App = (): JSX.Element => {
-  const isLogin = id == null || id == "" ? false : true;
+  const isLogin = getUserId() == "" ? false : true;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setLogin(isLogin));
-  }, [id]);
-  console.log(isLogin, "test");
+  }, [isLogin]);
+  console.log(isLogin, "as");
+
   return (
     <Router>
       <Nav />
@@ -36,6 +40,7 @@ const App = (): JSX.Element => {
           path="/login"
           redirectTo="/"
         />
+        <PrivateRoute component={Etalase} path="/mystore" redirectTo="/" />
 
         <PrivateRoute
           component={Personal}

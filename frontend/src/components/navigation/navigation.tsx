@@ -7,7 +7,7 @@ import authService from "../../services/auth.service";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { setLogin } from "../../reducer/auth";
+import { setLogin, setLoading } from "../../reducer/auth";
 
 const li = Menu.map((item) => (
   <li key={item.title}>
@@ -23,6 +23,7 @@ const Nav = () => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
+    dispatch(setLoading);
     const logOut = async () => {
       try {
         await authService.logout();

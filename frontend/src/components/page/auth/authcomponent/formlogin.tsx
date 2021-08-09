@@ -2,14 +2,15 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Input } from "./microComponent/input";
 import { styles } from "./style/form.style";
 import { AdditionalLogin } from "./microComponent/additional";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import auth from "../../../../services/auth.service";
 import { useDispatch, useSelector } from "react-redux";
-import { setLogin } from "../../../../reducer/auth";
+import { setLogin, setLoading } from "../../../../reducer/auth";
 import { RootState } from "../../../../store";
 import { LoginTypes } from "../../../../services/auth.service";
 
 const Form = () => {
+  const history = useHistory();
   const loginStatus = useSelector((state: RootState) => state.auth.isLogin);
   const dispatch = useDispatch();
   const [msg, setMsg] = useState("");
@@ -21,11 +22,13 @@ const Form = () => {
     const dataOnChange: LoginTypes = { ...data, [e.target.id]: e.target.value };
     setData(dataOnChange);
   };
-
+  dispatch(setLoading);
   const loginSubmit = async () => {
     try {
       await auth.login(data);
       dispatch(setLogin(true));
+      history.push("/");
+      window.location.reload();
     } catch (error) {
       setMsg(error.response.data.error);
       dispatch(setLogin(false));
@@ -39,34 +42,30 @@ const Form = () => {
 
   return (
     <>
-      {loginStatus == true ? (
-        <Redirect to="/" />
-      ) : (
-        <div style={styles.container}>
-          <form onSubmit={submit}>
-            <div style={styles.input}>
-              <p>Login</p>
-              <Input
-                name="username/email : "
-                type="text"
-                id="usernameOrEmail"
-                value={data.usernameOrEmail}
-                change={(e) => handleChange(e)}
-              />
-              <Input
-                name="password : "
-                type="password"
-                id="password"
-                value={data.password}
-                change={(e) => handleChange(e)}
-              />
+      <div style={styles.container}>
+        <form onSubmit={submit}>
+          <div style={styles.input}>
+            <p>Login</p>
+            <Input
+              name="username/email : "
+              type="text"
+              id="usernameOrEmail"
+              value={data.usernameOrEmail}
+              change={(e) => handleChange(e)}
+            />
+            <Input
+              name="password : "
+              type="password"
+              id="password"
+              value={data.password}
+              change={(e) => handleChange(e)}
+            />
 
-              <AdditionalLogin />
-              <p style={{ textAlign: "center" }}> {msg}</p>
-            </div>
-          </form>
-        </div>
-      )}
+            <AdditionalLogin />
+            <p style={{ textAlign: "center" }}> {msg}</p>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

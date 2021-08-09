@@ -1,5 +1,5 @@
 import { PrismaClient } from ".prisma/client";
-import { dataSeller, profile } from "@prisma/client";
+import { productSeller, profile } from "@prisma/client";
 import { UserLogin } from "../types/type";
 const prisma = new PrismaClient();
 
@@ -8,16 +8,22 @@ export const getAccount = async (obj: UserLogin) => {
     where: {
       OR: [{ email: obj.usernameOrEmail }, { username: obj.usernameOrEmail }],
     },
+    include: {
+      profile: {
+        select: {
+          detailForSeller: {
+            select: { storeAdress: { select: { id: true } } },
+          },
+        },
+      },
+    },
   });
 };
 
 export const getProfile = async (id: string): Promise<any> => {
   return await prisma.user.findUnique({
     where: { id: id },
-    select: {
-      username: true,
-      email: true,
-      role: true,
+    include: {
       profile: true,
     },
   });
@@ -27,9 +33,18 @@ export const getDetail = async (id: number): Promise<profile | null> => {
     where: { id: id },
   });
 };
-export const getSellerInfo = async (id: number): Promise<dataSeller | null> => {
-  return await prisma.dataSeller.findUnique({
+
+export const getStoreInfo = async (id: number): Promise<any> => {
+  return await prisma.storeInfo.findUnique({
+    where: { id },
+    include: { etalase: true },
+  });
+};
+
+export const getSellerProduct = async (
+  id: number
+): Promise<productSeller | null> => {
+  return await prisma.productSeller.findUnique({
     where: { id: id },
-    include: { storeAdress: true },
   });
 };

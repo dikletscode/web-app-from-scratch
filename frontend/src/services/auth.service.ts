@@ -9,11 +9,12 @@ export interface SignUpTypes {
   email: string;
   password: string;
 }
+let id = localStorage.getItem("userId");
 
 const logout = () => {
   return new Promise((resolve, reject) => {
     axiosInstance
-      .get("/logout")
+      .get(`/logout/${id}`)
       .then((res) => {
         resolve(res);
         localStorage.removeItem("userId");
@@ -23,12 +24,18 @@ const logout = () => {
       });
   });
 };
+
+interface typ {
+  userId: string;
+  profileId: number;
+}
+
 const login = (data: LoginTypes): Promise<any> => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .post("/login", data)
       .then((res) => {
-        localStorage.setItem("userId", res.data.result.id);
+        localStorage.setItem("_id", JSON.stringify(res.data.result));
         resolve(res.data);
       })
       .catch((err) => {
