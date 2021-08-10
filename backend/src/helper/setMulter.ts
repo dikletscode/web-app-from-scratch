@@ -13,5 +13,20 @@ const storage = multer.diskStorage({
   },
 });
 
+const storageProduct = multer.diskStorage({
+  destination: (_req, _file, callback) => {
+    callback(null, path.join(__dirname + "../../../public/product/"));
+  },
+  filename: (_req, file, callback) => {
+    callback(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
 const upload = multer({ storage: storage }).single("images");
+export const uploadProduct = multer({ storage: storageProduct }).single(
+  "images"
+);
 export default upload;

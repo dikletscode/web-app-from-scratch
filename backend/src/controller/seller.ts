@@ -1,9 +1,10 @@
 import { TermSeller } from "../types/type";
-import { getDetail, getStoreInfo } from "../models/read";
+import { getAllProduct, getDetail, getStoreInfo } from "../models/read";
 import { changeRole } from "../models/update";
 import { createTbSeller, createProduct } from "../models/create";
 import { Request, Response } from "express";
 import { Product } from "../types/type";
+import { uploadProduct } from "../helper/setMulter";
 
 const isAdmin = (obj: object): boolean => {
   for (let [_key, value] of Object.entries(obj)) {
@@ -15,21 +16,45 @@ const isAdmin = (obj: object): boolean => {
 };
 
 export const addProduct = async (req: Request, res: Response) => {
-  const product: Product = { ...req.body };
   const id = req.params.id;
-  try {
-    await createProduct(product, parseInt(id));
-    res.status(201).json({ message: "Product added successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "error" });
-  }
+  uploadProduct(req, res, async (err) => {
+    try {
+      if (err) {
+        console.log(err);
+      }
+      if (req.file) {
+        let data: Product = {
+          productName: req.body.productName,
+          price: parseInt(req.body.price),
+          total: parseInt(req.body.total),
+          images: req.file?.filename,
+        };
+        await createProduct(data, parseInt(id));
+        res.status(201).json({ message: "Product added successfully" });
+      } else {
+        console.log(null);
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "error" });
+    }
+  });
 };
 
 export const getStore = async (req: Request, res: Response) => {
   const profileId = req.params.id;
   try {
     let data = await getStoreInfo(parseInt(profileId));
+    res.json({ result: data });
+  } catch (error) {
+    res.json({ result: "err" });
+    console.log(error);
+  }
+};
+export const getProduct = async (_req: Request, res: Response) => {
+  try {
+    let data = await getAllProduct();
+    console.log(data);
     res.json({ result: data });
   } catch (error) {
     res.json({ result: "err" });

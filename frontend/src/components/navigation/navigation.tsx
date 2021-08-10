@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./nav.css";
 import { Menu } from "./menu";
 import { Link, useHistory } from "react-router-dom";
-
+import { getStoreId } from "../../helper/localstorage";
 import authService from "../../services/auth.service";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { setLogin, setLoading } from "../../reducer/auth";
+import { setLogin, setLoading, setRole } from "../../reducer/auth";
 
 const li = Menu.map((item) => (
   <li key={item.title}>
@@ -19,7 +19,7 @@ const li = Menu.map((item) => (
 
 const Nav = () => {
   let history = useHistory();
-  const loginStatus = useSelector((state: RootState) => state.auth.isLogin);
+  const loginStatus = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   const handleClick = () => {
@@ -35,6 +35,10 @@ const Nav = () => {
     };
     logOut();
   };
+  useEffect(() => {
+    dispatch(setRole(loginStatus.isSeller));
+  }, [loginStatus.isSeller]);
+  console.log(loginStatus.isSeller, "aku");
   return (
     <>
       <header>
@@ -47,18 +51,22 @@ const Nav = () => {
                 style={{ fontSize: "30px", color: "white" }}
               ></i>
             </li>
-            <li key="seller">
-              <Link
-                to="/mystore"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                MyStore
-              </Link>
-            </li>
+            {loginStatus.isSeller == false ? (
+              <></>
+            ) : (
+              <li key="seller">
+                <Link
+                  to="/mystore"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  MyStore
+                </Link>
+              </li>
+            )}
 
             {li}
 
-            {loginStatus ? (
+            {loginStatus.isLogin ? (
               <>
                 <li key="profile">
                   <Link to="/profile">

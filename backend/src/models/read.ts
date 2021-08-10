@@ -48,3 +48,7 @@ export const getSellerProduct = async (
     where: { id: id },
   });
 };
+
+export const getAllProduct = async () => {
+  return await prisma.productSeller.findMany();
+};

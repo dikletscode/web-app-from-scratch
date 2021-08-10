@@ -9,6 +9,7 @@ export const authSlice = createSlice({
   initialState: {
     isLogin: false,
     isLoading: true,
+    isSeller: false,
     userInfo: {
       username: "",
       image: "",
@@ -22,11 +23,14 @@ export const authSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setRole: (state, action: PayloadAction<boolean>) => {
+      state.isSeller = action.payload;
+    },
     setData: (state, action: PayloadAction<User>) => {
       state.userInfo = action.payload;
     },
   },
 });
 
-export const { setLogin, setLoading, setData } = authSlice.actions;
+export const { setLogin, setLoading, setData, setRole } = authSlice.actions;
 export default authSlice.reducer;

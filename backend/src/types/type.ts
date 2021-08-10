@@ -19,9 +19,9 @@ export interface TermSeller {
 export interface Product {
   productName: string;
   price: number;
-  addressId: number;
+  images: string;
   total: number;
-  star: number;
+  star?: number;
 }
 
 export interface Profile {

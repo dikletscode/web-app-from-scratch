@@ -8,9 +8,13 @@ import Empty from "./productEmpty/empty";
 import style from "./etalase.style";
 import { List } from "./list/biodata";
 import money from "./1.png";
+import Modal from "./modal/modal";
+import { IMAGE_PRODUCT_URL } from "../../../helper/staticImage";
+import ProductCard from "./product/products";
 
 const Etalase = () => {
-  let [data, setData] = useState<StoreInfo[]>([]);
+  const [data, setData] = useState<StoreInfo[]>([]);
+  const [modal, setModal] = useState(false);
   let [isFetching, setFeching] = useState(true);
   const getData = async () => {
     if (getStoreId() != "") {
@@ -27,6 +31,10 @@ const Etalase = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const toogle = () => {
+    modal == false ? setModal(true) : setModal(false);
+  };
   console.log(data, "data");
   if (isFetching == false) {
     return <div></div>;
@@ -49,8 +57,8 @@ const Etalase = () => {
                   </li>
 
                   <ul>
-                    <List key={"saldo"} inner="Refund" />
-                    <List key={"saldo"} inner="Sales Balance" />
+                    <List key={"refund"} inner="Refund" />
+                    <List key={"balance"} inner="Sales Balance" />
                   </ul>
                   <List key={"inbox"} inner="Inbox" />
                   <ul>
@@ -60,14 +68,7 @@ const Etalase = () => {
                   <ul></ul>
                 </ul>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  backgroundColor: "#fdfffc",
-                  width: "80vw",
-                  flexDirection: "column",
-                }}
-              >
+              <div style={style.content}>
                 <div style={style.nav}>
                   <div style={{ borderBottom: "3px solid red" }}>
                     last added
@@ -79,18 +80,25 @@ const Etalase = () => {
                     Complained product
                   </div>
                   <div>
-                    <button>add Product</button>
+                    <button onClick={() => toogle()}>add Product</button>
                   </div>
                   <div>
                     <button>add Product</button>
                   </div>
                 </div>
+                <Modal
+                  isActive={modal}
+                  closeModal={() => setModal(false)}
+                  id={item.id}
+                />
                 {item.etalase.length == 0 ? (
-                  <Empty />
+                  <>
+                    {console.log(item, "a")}
+
+                    <Empty />
+                  </>
                 ) : (
-                  <div style={style.box}>
-                    <div style={style.product}>1</div>
-                  </div>
+                  <ProductCard product={item.etalase} />
                 )}
               </div>
             </div>

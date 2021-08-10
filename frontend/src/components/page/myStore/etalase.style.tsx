@@ -31,7 +31,6 @@ const box = {
   padding: "20px",
 } as CSSProperties;
 const product = {
-  backgroundColor: "red",
   width: "170px",
   height: "170px",
 } as CSSProperties;
@@ -39,11 +38,18 @@ const nav = {
   display: "flex",
   padding: "50px",
   justifyContent: "space-between",
-};
+} as CSSProperties;
+const content = {
+  display: "flex",
+  backgroundColor: "#fdfffc",
+  width: "80vw",
+  flexDirection: "column",
+} as CSSProperties;
 export default {
   left,
   list,
   box,
   product,
   nav,
+  content,
 };

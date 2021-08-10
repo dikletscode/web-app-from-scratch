@@ -35,13 +35,15 @@ export const createTbSeller = (obj: TermSeller, id: number) => {
   });
 };
 
-export const createProduct = (obj: Product, profileId: number) => {
+export const createProduct = (obj: Product, storeId: number) => {
   return prisma.productSeller.create({
     data: {
       productName: obj.productName,
       price: obj.price,
       total: obj.total,
-      storeAddress: { connect: { id: profileId } },
+      images: obj.images,
+
+      storeAddress: { connect: { id: storeId } },
     },
   });
 };
