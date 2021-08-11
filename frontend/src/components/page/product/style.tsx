@@ -33,6 +33,24 @@ export default {
     objectFit: "cover",
     borderRadius: "50%",
   } as CSSProperties,
+
+  describe: {
+    width: "150px",
+    padding: 0,
+    margin: 0,
+    listStyle: "none",
+    opacity: 0,
+    transform: "translateY(-50%) translateX(-50%)",
+    position: "absolute",
+    top: "60%",
+    left: "50%",
+    zIndex: 1,
+    transition: "all 0.3s ease 0s",
+  } as CSSProperties,
+  describeHover: {
+    opacity: 1,
+    top: "80%",
+  } as CSSProperties,
   footer: {
     display: "flex",
     flexDirection: "row",
@@ -46,5 +64,9 @@ export default {
     padding: "10px",
     height: "260px",
     width: "200px",
+  } as CSSProperties,
+  box: {
+    position: "relative",
+    transition: "all 0.3s ease 0s",
   } as CSSProperties,
 };

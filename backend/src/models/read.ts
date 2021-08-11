@@ -23,11 +23,20 @@ export const getAccount = async (obj: UserLogin) => {
 export const getProfile = async (id: string): Promise<any> => {
   return await prisma.user.findUnique({
     where: { id: id },
-    include: {
+    select: {
+      username: true,
+      roleId: true,
       profile: true,
     },
   });
 };
+export const getStoreId = async (id: number) => {
+  return await prisma.dataSeller.findUnique({
+    where: { profileId: id },
+    include: { storeAdress: { select: { id: true } } },
+  });
+};
+
 export const getDetail = async (id: number): Promise<profile | null> => {
   return await prisma.profile.findUnique({
     where: { id: id },

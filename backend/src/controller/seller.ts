@@ -1,5 +1,10 @@
 import { TermSeller } from "../types/type";
-import { getAllProduct, getDetail, getStoreInfo } from "../models/read";
+import {
+  getAllProduct,
+  getDetail,
+  getStoreId,
+  getStoreInfo,
+} from "../models/read";
 import { changeRole } from "../models/update";
 import { createTbSeller, createProduct } from "../models/create";
 import { Request, Response } from "express";
@@ -54,7 +59,6 @@ export const getStore = async (req: Request, res: Response) => {
 export const getProduct = async (_req: Request, res: Response) => {
   try {
     let data = await getAllProduct();
-    console.log(data);
     res.json({ result: data });
   } catch (error) {
     res.json({ result: "err" });
@@ -72,9 +76,14 @@ export const sellerRegister = async (req: Request, res: Response) => {
       try {
         await changeRole(detail.userId);
         await createTbSeller(termSeller, parseInt(id));
+        let data = await getStoreId(detail.id);
         res.status(200).json({
           message: "Congratulations, now you can sell your best product..",
           accept: true,
+          result: {
+            id: detail.userId,
+            storeId: data?.storeAdress?.id,
+          },
         });
       } catch (error) {
         console.log(error);

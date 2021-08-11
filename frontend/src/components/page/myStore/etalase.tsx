@@ -11,6 +11,7 @@ import money from "./1.png";
 import Modal from "./modal/modal";
 import { IMAGE_PRODUCT_URL } from "../../../helper/staticImage";
 import ProductCard from "./product/products";
+import Nav from "../../navigation/navigation";
 
 const Etalase = () => {
   const [data, setData] = useState<StoreInfo[]>([]);
@@ -43,29 +44,31 @@ const Etalase = () => {
       <>
         {data.map((item: StoreInfo) => {
           return (
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex" }} key={item.id}>
               <div style={style.left}>
                 <ul style={style.list}>
-                  <List key={"name-store"} inner={item.nameStore + "'store"} />
-                  <li style={{ display: "flex" }}>
+                  <List
+                    keyProps="name-store"
+                    inner={item.nameStore + "'store"}
+                  />
+                  <ul>
                     <img
                       src={money}
                       style={{ height: "22px", paddingTop: "9px" }}
                       alt=""
                     />
-                    <List key={"saldo"} inner="Saldo" />
-                  </li>
+                    <List keyProps="saldo" inner="Saldo" />
+                  </ul>
 
                   <ul>
-                    <List key={"refund"} inner="Refund" />
-                    <List key={"balance"} inner="Sales Balance" />
+                    <List keyProps="refund" inner="Refund" />
+                    <List keyProps="balance" inner="Sales Balance" />
                   </ul>
-                  <List key={"inbox"} inner="Inbox" />
+                  <List keyProps="inbox" inner="Inbox" />
                   <ul>
-                    <List key={"read"} inner="read" />
-                    <List key={"spam"} inner="spam" />
+                    <List keyProps="read" inner="read" />
+                    <List keyProps="spam" inner="spam" />
                   </ul>
-                  <ul></ul>
                 </ul>
               </div>
               <div style={style.content}>

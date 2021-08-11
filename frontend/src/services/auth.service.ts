@@ -1,4 +1,5 @@
 import axiosInstance from "../config/axiosInstance";
+import { getUserId } from "../helper/localstorage";
 
 export interface LoginTypes {
   usernameOrEmail: string;
@@ -9,7 +10,7 @@ export interface SignUpTypes {
   email: string;
   password: string;
 }
-let id = localStorage.getItem("userId");
+let id = getUserId();
 
 const logout = () => {
   return new Promise((resolve, reject) => {
@@ -17,7 +18,7 @@ const logout = () => {
       .get(`/logout/${id}`)
       .then((res) => {
         resolve(res);
-        localStorage.removeItem("userId");
+        localStorage.removeItem("_id");
       })
       .catch((err) => {
         reject(err);

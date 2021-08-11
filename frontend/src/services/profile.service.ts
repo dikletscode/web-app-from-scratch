@@ -1,34 +1,30 @@
 import axiosInstance from "../config/axiosInstance";
 import { getUserId } from "../helper/localstorage";
 
-export interface ProfileTypes {
+export type ProfileTypes = {
+  id: number;
+  address: string;
+  fullname: string;
+  images: string;
+  noTelp: string;
+};
+
+export type UserTypes = {
   email: string;
   username: string;
-  profile: {
-    id: number;
-    address: string;
-    fullname: string;
-    images: Blob;
-    noTelp: string;
-  };
+  profile: ProfileTypes;
   role: object;
-}
+};
 
-export interface ProfileDb extends Omit<ProfileTypes, "profile"> {
-  username: string;
-  profile: {
-    images: string;
-  };
-}
 let id = getUserId();
 
-export const getProfile = (): Promise<any> => {
+export const getUserInfo = (): Promise<UserTypes> => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .get(`/profile/${id}`)
       .then((res) => {
         console.log(res.data);
-        resolve(res.data);
+        resolve(res.data.result);
       })
       .catch((err) => {
         reject(err);
@@ -39,16 +35,16 @@ export const getProfile = (): Promise<any> => {
 export const updateProfile = (
   id: number,
   obj: ProfileTypes[]
-): Promise<any> => {
+): Promise<ProfileTypes> => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .patch(`/profile/update/${id}`, {
-        fullname: obj[0].profile.fullname,
-        noTelp: obj[0].profile.noTelp,
-        address: obj[0].profile.address,
+        fullname: obj[0].fullname,
+        noTelp: obj[0].noTelp,
+        address: obj[0].address,
       })
       .then((res) => {
-        resolve(res.data);
+        resolve(res.data.result);
       })
       .catch((err) => {
         reject(err);

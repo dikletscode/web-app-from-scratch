@@ -11,6 +11,6 @@ export const getStoreId = (): string => {
   if (id == "") {
     return "";
   }
-  console.log(id);
+
   return JSON.parse(id).storeId;
 };

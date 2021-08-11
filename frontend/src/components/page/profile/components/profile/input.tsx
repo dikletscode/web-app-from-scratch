@@ -30,7 +30,13 @@ export const Row: FC<Props> = ({
   fieldTitle,
 }) => {
   return (
-    <tr>
+    <tr
+      style={{
+        lineHeight: "50px",
+        fontFamily: " 'Rajdhani', sans-serif",
+        fontSize: "1.2em",
+      }}
+    >
       <td> {fieldTitle} </td>
       {isEditing ? (
         <td>
@@ -42,19 +48,37 @@ export const Row: FC<Props> = ({
                   id={id}
                   onChange={change}
                   value={value}
-                  style={{ width: "300px" }}
+                  style={{
+                    width: "280px",
+                    fontSize: "1.2em",
+                    fontFamily: "monospace",
+                  }}
                 />
-                <input type="submit" value="submit" />
+                <input
+                  type="submit"
+                  value="change"
+                  style={{ backgroundColor: "white" }}
+                />
               </div>
             </form>
           </div>
         </td>
       ) : (
-        <td style={{ width: "330px" }}>: {fieldValue}</td>
+        <>
+          <td
+            style={{
+              width: "250px",
+              fontFamily: "monospace",
+              fontSize: "1.2em",
+            }}
+          >
+            : {fieldValue}{" "}
+            <small style={{ color: "red" }} onClick={editToogle}>
+              Change
+            </small>
+          </td>
+        </>
       )}
-      <td>
-        <button onClick={editToogle}>edit</button>
-      </td>
     </tr>
   );
 };
@@ -73,15 +97,13 @@ export const HandleImage: FC<Image> = ({ change, profileId, data }) => {
     const uploadImage = async () => {
       try {
         formData.append("images", data);
-        let datas = await updateImages(profileId, formData);
-        console.log(datas, "As");
+        await updateImages(profileId, formData);
       } catch (error) {
         console.log(error);
       }
     };
     uploadImage();
   };
-  console.log(data, "blob");
 
   return (
     <form action="" onSubmit={submit}>

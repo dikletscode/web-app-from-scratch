@@ -7,6 +7,8 @@ import "./animation.css";
 import Input, { InputSelect } from "./input";
 import { ProfileTypes } from "../../../../../services/profile.service";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setRole } from "../../../../../reducer/auth";
 
 const isNull = (obj: object): boolean => {
   for (let [_key, value] of Object.entries(obj)) {
@@ -18,11 +20,14 @@ const isNull = (obj: object): boolean => {
 };
 
 const StartSelling = ({ profile }: { profile: ProfileTypes[] }) => {
+  let dispatch = useDispatch();
   const [data, setData] = useState<SellerRegis>(sellerInit);
   const history = useHistory();
   const postData = async () => {
     try {
-      await register(data, profile[0].profile.id);
+      let result = await register(data, profile[0].id);
+      localStorage.setItem("_id", JSON.stringify(result));
+      dispatch(setRole(true));
       history.push("/mystore");
     } catch (error) {
       console.log(error, "1");
@@ -38,7 +43,7 @@ const StartSelling = ({ profile }: { profile: ProfileTypes[] }) => {
 
   return (
     <>
-      {isNull(profile[0].profile) ? (
+      {isNull(profile[0]) ? (
         <div style={style.container}>
           <p style={{ fontSize: "1.3em" }}>Form Seller Registration</p>
           <form style={style.form} onSubmit={handleSubmit}>

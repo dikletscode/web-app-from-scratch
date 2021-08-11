@@ -15,35 +15,33 @@ const ProductCard: React.FC<ArrProduct> = ({ product }) => {
     <div style={style.bigContainer}>
       {product.map((item: Product) => {
         return (
-          <>
-            <div style={style.container}>
-              <div style={style.content}>
-                <img
-                  src={IMAGE_PRODUCT_URL + item.images}
-                  alt=""
-                  style={style.image}
-                />
+          <div style={style.container} key={item.productName}>
+            <div style={style.content}>
+              <img
+                src={IMAGE_PRODUCT_URL + item.images}
+                alt=""
+                style={style.image}
+              />
 
-                <div style={style.desc}>
-                  <p>{item.productName}</p>
-                  <small>
-                    <Convert number={`${item.price}`} />
-                  </small>
+              <div style={style.desc}>
+                <p>{item.productName}</p>
+                <small>
+                  <Convert number={`${item.price}`} />
+                </small>
+              </div>
+              <div style={style.footer}>
+                <div>
+                  <p>
+                    <i className="fa fa-star" style={{ color: "yellow" }}></i>
+                    {item.star}
+                  </p>
                 </div>
-                <div style={style.footer}>
-                  <div>
-                    <p>
-                      <i className="fa fa-star" style={{ color: "yellow" }}></i>
-                      {item.star}
-                    </p>
-                  </div>
-                  <div>
-                    <p>{item.total} Sold</p>
-                  </div>
+                <div>
+                  <p>{item.total} Sold</p>
                 </div>
               </div>
             </div>
-          </>
+          </div>
         );
       })}
     </div>

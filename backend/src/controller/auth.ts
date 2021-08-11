@@ -1,6 +1,6 @@
 import { User, UserLogin } from "../types/type";
 import { signupMessage, loginMessage } from "../response/auth";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { compare } from "../helper/compare";
 import {
   createAccessToken,
@@ -33,11 +33,14 @@ export const logout = async (req: Request, res: Response) => {
   req.cookies.name = "refreshToken";
   res.clearCookie("secret");
   res.clearCookie("refreshToken");
+
   client.del(id, (err, ok) => {
     if (err) console.log(err);
     console.log(ok);
+    ok == 1
+      ? res.json({ message: "logout" })
+      : res.status(404).json({ message: "error" });
   });
-  res.json({ message: "logout" });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -74,15 +77,18 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const refreshToken = async (req: Request, res: Response) => {
+export const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     req.cookies.name = "refreshToken";
-    const refreshToken: string = req.cookies.refreshToken || "";
+    const refreshToken: string = req.cookies.refreshToken;
     if (refreshToken == "") {
       console.log("asu");
-      res.status(401).json({ message: "unauthorize" });
+      res.status(401).json({ message: "unauthorizess" });
     }
-
     const userId = await verifyRefreshToken(refreshToken);
     const accessToken = await createAccessToken(userId);
     const refreshTokens = await createRefreshToken(userId);
@@ -90,8 +96,6 @@ export const refreshToken = async (req: Request, res: Response) => {
     res.cookie("refreshToken", refreshTokens, cookieOption);
     res.json({ message: "refresh" });
   } catch (error) {
-    res.json({ message: "error" });
-    console.log(error);
-    console.log(error, "refresh");
+    next(error);
   }
 };

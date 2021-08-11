@@ -9,7 +9,6 @@ export const readProfile = async (req: Request, res: Response) => {
   let id = req.params.id;
   try {
     let profile = await getProfile(id);
-
     res.status(200).json({ result: profile });
   } catch (error) {
     res.status(400).json({ result: null });

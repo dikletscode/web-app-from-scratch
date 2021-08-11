@@ -1,13 +1,19 @@
 import React from "react";
 
+const leftBar = [
+  {
+    key: "saldo",
+    inner: "saldo",
+  },
+];
+
 export const List: React.FC<{
-  key: string;
+  keyProps: string;
   inner: string;
-  child?: React.FC;
-}> = ({ key, inner, child }) => {
+}> = ({ keyProps, inner }) => {
   return (
-    <li key={key}>
-      {inner} <ul>{child}</ul>
+    <li key={keyProps} id={keyProps}>
+      {inner}
     </li>
   );
 };

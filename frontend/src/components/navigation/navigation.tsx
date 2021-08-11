@@ -30,6 +30,7 @@ const Nav = () => {
         dispatch(setLogin(false));
         history.push("/login");
       } catch (error) {
+        history.push("/login");
         console.log(error);
       }
     };

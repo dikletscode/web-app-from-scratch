@@ -1,5 +1,6 @@
 import { sign, verify } from "jsonwebtoken";
 import { client } from "..";
+import { loginMessage } from "../response/auth";
 require("dotenv").config();
 
 export const verifyRefreshToken = (refreshToken: any): Promise<any> => {
@@ -12,11 +13,8 @@ export const verifyRefreshToken = (refreshToken: any): Promise<any> => {
         const id = encode.id;
         client.get(id, (err, ok) => {
           if (err) reject(err);
-          if (refreshToken == ok) {
-            resolve(id);
-          } else {
-            reject("unauthorize");
-          }
+          if (refreshToken == ok) return resolve(id);
+          reject(loginMessage.failed("Unauthorize"));
         });
       }
     );

@@ -45,7 +45,7 @@ export const getAllProduct = (): Promise<any> => {
   });
 };
 
-export const register = (obj: SellerRegis, id: number) => {
+export const register = (obj: SellerRegis, id: number): Promise<any> => {
   return new Promise((resolve, reject) => {
     axiosInstance
       .post("/seller/register/" + id, {
@@ -56,8 +56,7 @@ export const register = (obj: SellerRegis, id: number) => {
         province: obj.city,
       })
       .then((res) => {
-        console.log(res.data, "res data");
-        resolve(res);
+        resolve(res.data.result);
       })
       .catch((err) => {
         console.log(err, "err");

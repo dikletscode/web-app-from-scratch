@@ -19,9 +19,11 @@ export const verifyToken = async (
       (err: any, _encode: any) => {
         if (err) {
           const message =
-            err.name === "JsonWebTokenError" ? "Unauthorized" : "expired";
+            err.name === "JsonWebTokenError"
+              ? { message: "unauthorized", code: "401" }
+              : { message: "expired", code: "403" };
 
-          return res.status(403).json({ message: message });
+          return res.status(400).json(message);
         }
 
         return next();
