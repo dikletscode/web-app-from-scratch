@@ -24,6 +24,22 @@ export interface Product {
   star?: number;
 }
 
+export interface Store {
+  id: number;
+  nameStore: string;
+  province: string;
+  city: string;
+  address: string;
+  etalase: Product;
+}
+export interface Cart {
+  cart: {
+    id: number;
+    userId: string;
+    product: [];
+  };
+}
+
 export interface Profile {
   fullname: string;
   noTelp: string;

@@ -1,35 +1,24 @@
 import axiosInstance from "../config/axiosInstance";
 import { getUserId } from "../helper/localstorage";
+import { LoginTypes, SignUpTypes } from "../interface/auth";
 
-export interface LoginTypes {
-  usernameOrEmail: string;
-  password: string;
-}
-export interface SignUpTypes {
-  username: string;
-  email: string;
-  password: string;
-}
 let id = getUserId();
 
 const logout = () => {
   return new Promise((resolve, reject) => {
-    axiosInstance
-      .get(`/logout/${id}`)
-      .then((res) => {
-        resolve(res);
-        localStorage.removeItem("_id");
-      })
-      .catch((err) => {
-        reject(err);
-      });
+    id == ""
+      ? resolve("")
+      : axiosInstance
+          .delete(`/logout/${id}`)
+          .then((res) => {
+            resolve(res);
+            localStorage.removeItem("_id");
+          })
+          .catch((err) => {
+            reject(err);
+          });
   });
 };
-
-interface typ {
-  userId: string;
-  profileId: number;
-}
 
 const login = (data: LoginTypes): Promise<any> => {
   return new Promise((resolve, reject) => {
@@ -37,6 +26,7 @@ const login = (data: LoginTypes): Promise<any> => {
       .post("/login", data)
       .then((res) => {
         localStorage.setItem("_id", JSON.stringify(res.data.result));
+        console.log(res.data.result);
         resolve(res.data);
       })
       .catch((err) => {

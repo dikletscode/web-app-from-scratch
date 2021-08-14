@@ -1,5 +1,5 @@
 import { PrismaClient } from ".prisma/client";
-import { productSeller, profile } from "@prisma/client";
+import { profile } from "@prisma/client";
 import { UserLogin } from "../types/type";
 const prisma = new PrismaClient();
 
@@ -9,6 +9,7 @@ export const getAccount = async (obj: UserLogin) => {
       OR: [{ email: obj.usernameOrEmail }, { username: obj.usernameOrEmail }],
     },
     include: {
+      cart: true,
       profile: {
         select: {
           detailForSeller: {
@@ -50,14 +51,21 @@ export const getStoreInfo = async (id: number): Promise<any> => {
   });
 };
 
-export const getSellerProduct = async (
-  id: number
-): Promise<productSeller | null> => {
-  return await prisma.productSeller.findUnique({
+export const myCart = (id: number) => {
+  return prisma.cart.findUnique({
     where: { id: id },
+
+    select: {
+      product: { include: { product: { include: { storeAddress: true } } } },
+    },
   });
 };
 
+export const myCart2 = (id: number) => {
+  return prisma.product.groupBy({
+    by: ["productName"],
+  });
+};
 export const getAllProduct = async () => {
-  return await prisma.productSeller.findMany();
+  return await prisma.product.findMany();
 };

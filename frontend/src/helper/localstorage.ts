@@ -1,16 +1,26 @@
 let id = localStorage.getItem("_id") || "{}";
 
 export const getUserId = (): string => {
-  if (id == "") {
+  let userId = JSON.parse(id).id;
+  if (!userId) {
     return "";
   }
-  return JSON.parse(id).id;
+  return userId;
 };
 
 export const getStoreId = (): string => {
-  if (id == "") {
+  let storeId = JSON.parse(id).storeId;
+  if (!storeId) {
     return "";
   }
 
-  return JSON.parse(id).storeId;
+  return storeId;
+};
+export const getCartId = (): string => {
+  let cartId = JSON.parse(id).cartId;
+  if (!cartId) {
+    return "";
+  }
+
+  return cartId;
 };

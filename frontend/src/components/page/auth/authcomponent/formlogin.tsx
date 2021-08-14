@@ -28,7 +28,7 @@ const Form = () => {
       await auth.login(data);
       dispatch(setLogin(true));
       history.push("/");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       setMsg(error.response.data.error);
       dispatch(setLogin(false));
@@ -51,14 +51,14 @@ const Form = () => {
               type="text"
               id="usernameOrEmail"
               value={data.usernameOrEmail}
-              change={(e) => handleChange(e)}
+              change={handleChange}
             />
             <Input
               name="password : "
               type="password"
               id="password"
               value={data.password}
-              change={(e) => handleChange(e)}
+              change={handleChange}
             />
 
             <AdditionalLogin />

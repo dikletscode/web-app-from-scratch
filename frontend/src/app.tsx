@@ -22,18 +22,19 @@ import Etalase from "./components/page/myStore/etalase";
 import { getStoreId, getUserId } from "./helper/localstorage";
 
 import { RootState } from "./store";
+import Cart from "./components/page/cart/cart";
 
 const App = (): JSX.Element => {
-  const isSeller = getStoreId() == undefined ? false : true;
-  const isLogin = getUserId() == "" ? false : true;
+  const isSeller = !getStoreId() ? false : true;
+  const isLogin = !getUserId() ? false : true;
   const state = useSelector((state: RootState) => state.error.errorResponse);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setRole(isSeller));
     dispatch(setLogin(isLogin));
-  }, [isLogin, isSeller]);
-  console.log(getStoreId(), "seller");
+  }, [isSeller, isLogin]);
+
   return (
     <Router>
       {state.isError == true ? (
@@ -62,6 +63,7 @@ const App = (): JSX.Element => {
               path="/profile"
               redirectTo="/login"
             />
+            <Route component={Cart} path="/cart" />
             <Route component={Signup} path="/signup" />
           </Switch>
         </>

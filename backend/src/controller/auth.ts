@@ -56,11 +56,13 @@ export const login = async (req: Request, res: Response) => {
       if (account.roleId == 2) {
         data = {
           id: account.id,
+          cartId: account.cart?.id,
         };
       } else {
         data = {
           id: account.id,
           storeId: account.profile?.detailForSeller?.storeAdress?.id,
+          cartId: account.cart?.id,
         };
       }
       var date = new Date();

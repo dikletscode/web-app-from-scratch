@@ -1,10 +1,6 @@
 import React, { ChangeEvent, FormEvent } from "react";
 import { FC } from "react";
-import {
-  ProfileTypes,
-  updateImages,
-  updateProfile,
-} from "../../../../../services/profile.service";
+import { updateImages } from "../../../../../services/profile.service";
 
 interface Props {
   id: string;
@@ -67,7 +63,7 @@ export const Row: FC<Props> = ({
         <>
           <td
             style={{
-              width: "250px",
+              width: "300px",
               fontFamily: "monospace",
               fontSize: "1.2em",
             }}

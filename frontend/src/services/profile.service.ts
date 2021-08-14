@@ -1,34 +1,21 @@
 import axiosInstance from "../config/axiosInstance";
 import { getUserId } from "../helper/localstorage";
-
-export type ProfileTypes = {
-  id: number;
-  address: string;
-  fullname: string;
-  images: string;
-  noTelp: string;
-};
-
-export type UserTypes = {
-  email: string;
-  username: string;
-  profile: ProfileTypes;
-  role: object;
-};
+import { UserTypes, ProfileTypes } from "../interface/profile";
 
 let id = getUserId();
 
-export const getUserInfo = (): Promise<UserTypes> => {
+export const getUserInfo = (): Promise<UserTypes> | undefined => {
   return new Promise((resolve, reject) => {
-    axiosInstance
-      .get(`/profile/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        resolve(res.data.result);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+    id == ""
+      ? undefined
+      : axiosInstance
+          .get(`/profile/${id}`)
+          .then((res) => {
+            resolve(res.data.result);
+          })
+          .catch((err) => {
+            reject(err);
+          });
   });
 };
 

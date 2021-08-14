@@ -1,17 +1,18 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import style from "./style";
 import "./style.css";
-import { Product } from "../../../services/selling.service";
 import { IMAGE_PRODUCT_URL } from "../../../helper/staticImage";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Convert from "../myStore/product/convertCurrency";
-import { getAllProduct } from "../../../services/selling.service";
+import { getBuyyerProduct } from "../../../services/selling.service";
+import { Product } from "../../../interface/seller";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { setLoading } from "../../../reducer/auth";
 import Loading from "../../loading/loading";
+import cartService from "../../../services/cart.service";
 
 const ProductGlobal = () => {
   const [product, setProduct] = useState<Product[]>([]);
@@ -20,7 +21,7 @@ const ProductGlobal = () => {
   const fetchProduct = async () => {
     try {
       dispatch(setLoading(true));
-      let data = await getAllProduct();
+      let data = await getBuyyerProduct();
       setProduct(data);
       dispatch(setLoading(false));
     } catch (error) {
@@ -28,6 +29,18 @@ const ProductGlobal = () => {
       dispatch(setLoading(false));
     }
   };
+  const productToCart = async (productId: string) => {
+    try {
+      await cartService.moveToCart(productId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const sendProduct = (e: MouseEvent, productId: string) => {
+    e.preventDefault();
+    productToCart(productId);
+  };
+
   useEffect(() => {
     fetchProduct();
   }, []);
@@ -60,7 +73,11 @@ const ProductGlobal = () => {
                           </a>
                         </li>
                         <li>
-                          <a href="" data-tip="Tambahkan ke Keranjang">
+                          <a
+                            onClick={(e: MouseEvent) => sendProduct(e, item.id)}
+                            href=""
+                            data-tip="Tambahkan ke Keranjang"
+                          >
                             <i className="fa fa-shopping-cart"></i>
                           </a>
                         </li>

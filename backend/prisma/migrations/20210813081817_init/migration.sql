@@ -62,15 +62,33 @@ CREATE TABLE `storeInfo` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `productSeller` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product` (
+    `id` VARCHAR(191) NOT NULL,
     `productName` VARCHAR(191) NOT NULL,
     `price` INTEGER NOT NULL,
     `storeId` INTEGER NOT NULL,
+    `images` VARCHAR(300) NOT NULL,
     `total` INTEGER NOT NULL DEFAULT 0,
     `star` TINYINT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `cart` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `cart_userId_unique`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `productOnCart` (
+    `productId` VARCHAR(191) NOT NULL,
+    `cartId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`productId`, `cartId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -86,4 +104,13 @@ ALTER TABLE `dataSeller` ADD FOREIGN KEY (`profileId`) REFERENCES `profile`(`id`
 ALTER TABLE `storeInfo` ADD FOREIGN KEY (`sellerId`) REFERENCES `dataSeller`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `productSeller` ADD FOREIGN KEY (`storeId`) REFERENCES `storeInfo`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `product` ADD FOREIGN KEY (`storeId`) REFERENCES `storeInfo`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `cart` ADD FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `productOnCart` ADD FOREIGN KEY (`productId`) REFERENCES `product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `productOnCart` ADD FOREIGN KEY (`cartId`) REFERENCES `cart`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -26,6 +26,7 @@ model user{
   roleId Int
   role role @relation(fields: [roleId],references:[roleId])
   profile profile?
+  cart cart?
 }
 
 model profile{
@@ -55,11 +56,11 @@ model storeInfo{
   city String
   address String
   sellerId Int
-  etalase productSeller[]
+  etalase product[]
   detailSeller dataSeller @relation(fields: [sellerId],references:[id])
 }
-model productSeller{
-    id Int @id @default(autoincrement())
+model product{
+    id String @id @default(uuid())
     productName String
     price Int
     storeId Int
@@ -67,7 +68,23 @@ model productSeller{
     storeAddress storeInfo @relation(fields: [storeId],references:[id])
     total Int @default(0)
     star Int @db.TinyInt @default(0)
+    toCart productOnCart[]
 }
+model cart{
+  id Int @id @default(autoincrement())
+  product productOnCart[]
+  userId String
+  user user @relation(fields: [userId],references: [id])
+}
+
+model productOnCart{
+  product product @relation(fields: [productId],references:[id])
+  productId String
+  cart cart @relation(fields: [cartId],references:[id])
+  cartId Int
+  @@id([productId,cartId])
+}
+
 
 
 

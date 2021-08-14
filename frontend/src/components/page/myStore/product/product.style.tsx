@@ -7,8 +7,9 @@ export default {
   } as CSSProperties,
 
   image: {
-    width: "80%",
-    height: "auto",
+    width: "120px",
+    height: "120px",
+    objectFit: "cover",
   } as CSSProperties,
 
   desc: {
@@ -21,7 +22,7 @@ export default {
     padding: "10px 10px",
     paddingBottom: "0px",
     fontFamily: "'Gowun Dodum', sans-serif",
-    height: "92%",
+    height: "70%",
     textAlign: "center",
     boxShadow:
       "rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset",
@@ -44,7 +45,7 @@ export default {
   container: {
     paddingTop: "0px",
     padding: "10px",
-    height: "260px",
+    height: "300px",
     width: "200px",
   } as CSSProperties,
 };

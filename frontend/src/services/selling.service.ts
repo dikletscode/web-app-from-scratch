@@ -1,23 +1,5 @@
 import axiosInstance from "../config/axiosInstance";
-import { SellerRegis } from "../valueInit/seller";
-
-export interface Product {
-  productName: string;
-  price: string;
-  total: string;
-  images: string;
-  star?: number;
-}
-
-export interface StoreInfo {
-  address: string;
-  city: string;
-  etalase: Product[];
-  id: number;
-  nameStore: string;
-  province: string;
-  sellerId: number;
-}
+import { SellerRegis, StoreInfo } from "../interface/seller";
 
 export const getStore = (id: string): Promise<any> => {
   return new Promise((resolve, reject) => {
@@ -35,8 +17,23 @@ export const getStore = (id: string): Promise<any> => {
 export const getAllProduct = (): Promise<any> => {
   return new Promise((resolve, reject) => {
     axiosInstance
+      .get("/store/product")
+      .then((res) => {
+        console.log(res.data.result);
+        resolve(res.data.result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const getBuyyerProduct = (): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    axiosInstance
       .get("/product")
       .then((res) => {
+        console.log(res.data.result);
         resolve(res.data.result);
       })
       .catch((err) => {

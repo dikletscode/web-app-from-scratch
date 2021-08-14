@@ -1,11 +1,9 @@
 import React, { FC, useState, ChangeEvent, FormEvent } from "react";
-import {
-  updateProfile,
-  UserTypes,
-} from "../../../../../services/profile.service";
+import { updateProfile } from "../../../../../services/profile.service";
+
 import "../../assets/profile.css";
 import { HandleImage, Row } from "./input";
-import { ProfileTypes } from "../../../../../services/profile.service";
+import { ProfileTypes, UserTypes } from "../../../../../interface/profile";
 import style from "./profile.style";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../store";

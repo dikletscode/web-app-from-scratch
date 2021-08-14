@@ -22,6 +22,7 @@ const refresh = () => {
 
 axiosInstance.interceptors.response.use(undefined, (err) => {
   const { status } = err.response;
+  console.log(err);
   if (err.response.data.message == "expired") {
     refresh()
       .then((res) => {

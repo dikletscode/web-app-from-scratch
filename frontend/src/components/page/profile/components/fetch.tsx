@@ -7,6 +7,7 @@ import { setAvatar, setLoading, User } from "../../../../reducer/auth";
 import StartSelling from "./seller/startSelling";
 import Loading from "../../../loading/loading";
 import { AVATAR_URL } from "../../../../helper/staticImage";
+import { getUserId } from "../../../../helper/localstorage";
 
 enum Role {
   SELLER = 1,
@@ -23,8 +24,7 @@ const DataFetch = ({ name }: { name: string }): JSX.Element => {
     try {
       dispatch(setLoading(true));
       let data = await getUserInfo();
-      let arr: ProfileTypes = data.profile;
-      setState(arr.images);
+      setState(data?.profile.images || "");
       setUserInfo(() => data);
       setFetching(true);
       dispatch(setLoading(false));

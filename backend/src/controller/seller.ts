@@ -35,6 +35,7 @@ export const addProduct = async (req: Request, res: Response) => {
           images: req.file?.filename,
         };
         await createProduct(data, parseInt(id));
+
         res.status(201).json({ message: "Product added successfully" });
       } else {
         console.log(null);
@@ -59,6 +60,7 @@ export const getStore = async (req: Request, res: Response) => {
 export const getProduct = async (_req: Request, res: Response) => {
   try {
     let data = await getAllProduct();
+    console.log(data);
     res.json({ result: data });
   } catch (error) {
     res.json({ result: "err" });

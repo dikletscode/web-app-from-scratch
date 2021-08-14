@@ -1,21 +1,21 @@
 import React from "react";
 import style from "./product.style";
-import { Product } from "../../../../services/selling.service";
 import { IMAGE_PRODUCT_URL } from "../../../../helper/staticImage";
 import { useEffect } from "react";
 import { useState } from "react";
 import Convert from "./convertCurrency";
+import { ProductSeller } from "../../../../services/selling.service";
 
 interface ArrProduct {
-  product: Product[];
+  product: ProductSeller[];
 }
 
 const ProductCard: React.FC<ArrProduct> = ({ product }) => {
   return (
     <div style={style.bigContainer}>
-      {product.map((item: Product) => {
+      {product.map((item: ProductSeller) => {
         return (
-          <div style={style.container} key={item.productName}>
+          <div style={style.container} key={item.images}>
             <div style={style.content}>
               <img
                 src={IMAGE_PRODUCT_URL + item.images}

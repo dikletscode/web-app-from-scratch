@@ -35,3 +35,14 @@ export const changeRole = async (userId: string) => {
     where: { id: userId },
   });
 };
+
+// export const updateCart = async (id: number, productId: number) => {
+//   return await prisma.cart.update({
+//     data: {
+//       product: {
+//         connect: { id: productId },
+//       },
+//     },
+//     where: { id: id },
+//   });
+// };

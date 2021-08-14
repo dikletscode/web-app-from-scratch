@@ -22,7 +22,6 @@ const infoData = {
   display: "flex",
   justifyContent: "space-evenly",
   width: "100%",
-
   alignContent: "space-evenly",
 } as React.CSSProperties;
 
@@ -40,7 +39,6 @@ const buttonSeller = {
 export default {
   avatar,
   content,
-
   upload,
   infoData,
   buttonSeller,

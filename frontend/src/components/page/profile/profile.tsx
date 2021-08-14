@@ -16,7 +16,6 @@ const Personal = () => {
   }
 
   let query = useQuery();
-  useEffect(() => {});
 
   return (
     <>

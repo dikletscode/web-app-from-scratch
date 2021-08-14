@@ -1,4 +1,6 @@
 import { PrismaClient } from ".prisma/client";
+
+// import { productSeller } from "@prisma/client";
 import { User } from "../types/type";
 import { TermSeller, Product } from "../types/type";
 
@@ -12,6 +14,9 @@ export const createAccount = (obj: User, hash: string) => {
       password: hash,
       role: { connect: { roleId: 2 } },
       profile: {
+        create: {},
+      },
+      cart: {
         create: {},
       },
     },
@@ -36,14 +41,33 @@ export const createTbSeller = (obj: TermSeller, id: number) => {
 };
 
 export const createProduct = (obj: Product, storeId: number) => {
-  return prisma.productSeller.create({
+  return prisma.product.create({
     data: {
       productName: obj.productName,
       price: obj.price,
       total: obj.total,
       images: obj.images,
-
       storeAddress: { connect: { id: storeId } },
+    },
+  });
+};
+// export const addGLobalProduct = (productId: number) => {
+//   return prisma.productBuyyer.create({
+//     data: {
+//       product: { connect: { id: productId } },
+//     },
+//   });
+// };
+// export const getGlobalProduct = () => {
+//   return prisma.productBuyyer.findMany({
+//     include: { product: true },
+//   });
+// };
+export const addToCart = (productId: string, cartId: number) => {
+  return prisma.productOnCart.create({
+    data: {
+      cart: { connect: { id: cartId } },
+      product: { connect: { id: productId } },
     },
   });
 };

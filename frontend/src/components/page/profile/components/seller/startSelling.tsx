@@ -1,11 +1,11 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { SellerRegis, sellerInit } from "../../../../../valueInit/seller";
+import { SellerRegis, sellerInit } from "../../../../../interface/seller";
 import { register } from "../../../../../services/selling.service";
 import style from "../../assets/selling.style";
 import styles from "./seller.style";
 import "./animation.css";
 import Input, { InputSelect } from "./input";
-import { ProfileTypes } from "../../../../../services/profile.service";
+import { ProfileTypes } from "../../../../../interface/profile";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setRole } from "../../../../../reducer/auth";

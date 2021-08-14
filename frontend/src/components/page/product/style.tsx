@@ -7,8 +7,9 @@ export default {
   } as CSSProperties,
 
   image: {
-    width: "80%",
-    height: "auto",
+    width: "140px",
+    height: "140px",
+    objectFit: "cover",
   } as CSSProperties,
 
   desc: {
@@ -68,5 +69,6 @@ export default {
   box: {
     position: "relative",
     transition: "all 0.3s ease 0s",
+    paddingTop: "40px",
   } as CSSProperties,
 };
