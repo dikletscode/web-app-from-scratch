@@ -1,8 +1,8 @@
 import axiosInstance from "../config/axiosInstance";
-import { getUserId } from "../helper/localstorage";
+import get from "../helper/localstorage";
 import { LoginTypes, SignUpTypes } from "../interface/auth";
 
-let id = getUserId();
+let id = get.userId;
 
 const logout = () => {
   return new Promise((resolve, reject) => {
@@ -26,7 +26,6 @@ const login = (data: LoginTypes): Promise<any> => {
       .post("/login", data)
       .then((res) => {
         localStorage.setItem("_id", JSON.stringify(res.data.result));
-        console.log(res.data.result);
         resolve(res.data);
       })
       .catch((err) => {

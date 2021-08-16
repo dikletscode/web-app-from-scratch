@@ -3,7 +3,7 @@ import { Input } from "./microComponent/input";
 import { styles } from "./style/form.style";
 import { AdditionalSignup } from "./microComponent/additional";
 import authServices from "../../../../services/auth.service";
-import { SignUpTypes } from "../../../../services/auth.service";
+import { SignUpTypes } from "../../../../interface/auth";
 
 export const Form = () => {
   const [msg, setMsg] = useState("");

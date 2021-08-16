@@ -1,8 +1,8 @@
 import axiosInstance from "../config/axiosInstance";
-import { getUserId } from "../helper/localstorage";
+import get from "../helper/localstorage";
 import { UserTypes, ProfileTypes } from "../interface/profile";
 
-let id = getUserId();
+let id = get.userId;
 
 export const getUserInfo = (): Promise<UserTypes> | undefined => {
   return new Promise((resolve, reject) => {

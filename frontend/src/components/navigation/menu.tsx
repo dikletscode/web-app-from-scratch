@@ -36,7 +36,7 @@ export const ListNav = ({ action }: { action: () => void }) => {
       del[lasindex] = {
         ...del[lasindex],
         title: "logout",
-        href: "/logout",
+        href: "/login",
         icon: "fa fa-sign-out",
         klik: action,
       };

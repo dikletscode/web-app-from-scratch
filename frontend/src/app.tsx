@@ -1,11 +1,6 @@
 import React from "react";
 import Login from "./components/page/auth/login";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Nav from "./components/navigation/navigation";
 import { Signup } from "./components/page/auth/signup";
 import "./app.css";
@@ -15,18 +10,16 @@ import Personal from "./components/page/profile/profile";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin, setRole } from "./reducer/auth";
-import { setError } from "./reducer/error";
-
 import { NotFound } from "./components/page/errors/notFound";
 import Etalase from "./components/page/myStore/etalase";
-import { getStoreId, getUserId } from "./helper/localstorage";
+import getId from "./helper/localstorage";
 
 import { RootState } from "./store";
 import Cart from "./components/page/cart/cart";
 
 const App = (): JSX.Element => {
-  const isSeller = !getStoreId() ? false : true;
-  const isLogin = !getUserId() ? false : true;
+  const isSeller = !getId.storeId ? false : true;
+  const isLogin = !getId.storeId ? false : true;
   const state = useSelector((state: RootState) => state.error.errorResponse);
   const dispatch = useDispatch();
 

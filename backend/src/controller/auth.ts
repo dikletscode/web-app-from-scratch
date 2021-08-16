@@ -46,7 +46,7 @@ export const logout = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const user: UserLogin = { ...req.body };
   let account = await getAccount(user);
-
+  console.log(user);
   if (account != null) {
     try {
       await compare(user.password, account.password);

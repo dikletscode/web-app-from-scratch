@@ -93,9 +93,7 @@ const ProductGlobal = () => {
 
                       <div style={style.desc}>
                         <p>{item.productName}</p>
-                        <small>
-                          <Convert number={`${item.price}`} />
-                        </small>
+                        <small>{Convert(item.price.toString())}</small>
                       </div>
                       <div style={style.footer}>
                         <div>

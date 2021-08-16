@@ -1,6 +1,7 @@
 const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "./src/index.tsx"),
@@ -30,6 +31,7 @@ module.exports = {
     filename: "bundle.js",
     publicPath: "/",
   },
+  devtool: "inline-source-map",
   devServer: {
     contentBase: path.join(__dirname, "./public"),
     compress: true,
@@ -37,5 +39,10 @@ module.exports = {
     historyApiFallback: true,
     port: 2002,
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      async: false,
+    }),
+  ],
 };

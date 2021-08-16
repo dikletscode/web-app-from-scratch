@@ -1,26 +1,14 @@
 let id = localStorage.getItem("_id") || "{}";
 
-export const getUserId = (): string => {
-  let userId = JSON.parse(id).id;
-  if (!userId) {
-    return "";
-  }
-  return userId;
-};
+interface ID {
+  userId: string;
+  storeId: string;
+  cartId: string;
+}
 
-export const getStoreId = (): string => {
-  let storeId = JSON.parse(id).storeId;
-  if (!storeId) {
-    return "";
-  }
-
-  return storeId;
+const get: ID = {
+  userId: JSON.parse(id).id || "",
+  storeId: JSON.parse(id).storeId || "",
+  cartId: JSON.parse(id).cartId || "",
 };
-export const getCartId = (): string => {
-  let cartId = JSON.parse(id).cartId;
-  if (!cartId) {
-    return "";
-  }
-
-  return cartId;
-};
+export default get;

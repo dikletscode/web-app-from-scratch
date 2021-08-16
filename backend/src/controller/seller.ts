@@ -8,8 +8,9 @@ import {
 import { changeRole } from "../models/update";
 import { createTbSeller, createProduct } from "../models/create";
 import { Request, Response } from "express";
+import redis from "../caching/setup";
 import { Product } from "../types/type";
-import { uploadProduct } from "../helper/setMulter";
+import { v4 as uuidv4 } from "uuid";
 
 const isAdmin = (obj: object): boolean => {
   for (let [_key, value] of Object.entries(obj)) {
@@ -22,29 +23,25 @@ const isAdmin = (obj: object): boolean => {
 
 export const addProduct = async (req: Request, res: Response) => {
   const id = req.params.id;
-  uploadProduct(req, res, async (err) => {
-    try {
-      if (err) {
-        console.log(err);
-      }
-      if (req.file) {
-        let data: Product = {
-          productName: req.body.productName,
-          price: parseInt(req.body.price),
-          total: parseInt(req.body.total),
-          images: req.file?.filename,
-        };
-        await createProduct(data, parseInt(id));
+  try {
+    if (req.file) {
+      let data: Product = {
+        productName: req.body.productName,
+        price: parseInt(req.body.price),
+        total: parseInt(req.body.total),
+        images: req.file?.filename,
+      };
+      await redis.remove("product");
+      await createProduct(data, parseInt(id));
 
-        res.status(201).json({ message: "Product added successfully" });
-      } else {
-        console.log(null);
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: "error" });
+      res.status(201).json({ message: "Product added successfully" });
+    } else {
+      console.log(null);
     }
-  });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "error" });
+  }
 };
 
 export const getStore = async (req: Request, res: Response) => {
@@ -57,11 +54,17 @@ export const getStore = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
 export const getProduct = async (_req: Request, res: Response) => {
   try {
-    let data = await getAllProduct();
-    console.log(data);
-    res.json({ result: data });
+    let product = await getAllProduct();
+    const cache = await redis.getData("product");
+    if (cache != null) {
+      res.json({ result: JSON.parse(cache) });
+    } else {
+      redis.setData("product", JSON.stringify(product));
+      res.json({ result: product });
+    }
   } catch (error) {
     res.json({ result: "err" });
     console.log(error);

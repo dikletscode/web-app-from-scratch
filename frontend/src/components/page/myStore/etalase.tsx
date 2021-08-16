@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { getStore } from "../../../services/selling.service";
 import { StoreInfo } from "../../../interface/seller";
-import { getStoreId } from "../../../helper/localstorage";
 import Empty from "./productEmpty/empty";
 import style from "./etalase.style";
 import { List } from "./list/biodata";
@@ -13,6 +12,7 @@ import ProductCard from "./product/products";
 import Loading from "../../loading/loading";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../../reducer/auth";
+import get from "../../../helper/localstorage";
 
 const Etalase = () => {
   const [data, setData] = useState<StoreInfo[]>([]);
@@ -20,9 +20,9 @@ const Etalase = () => {
   const [isFetching, setFeching] = useState(false);
   const dispatch = useDispatch();
   const getData = async () => {
-    if (getStoreId() != "") {
+    if (get.storeId != "") {
       try {
-        let data: StoreInfo = await getStore(getStoreId());
+        let data: StoreInfo = await getStore(get.storeId);
         setData(() => [data]);
         setFeching(true);
       } catch (error) {

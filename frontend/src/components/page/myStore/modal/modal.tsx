@@ -4,7 +4,6 @@ import close from "./close.jpg";
 import Input from "./input";
 import { useState } from "react";
 import axiosInstance from "../../../../config/axiosInstance";
-import { getUserId } from "../../../../helper/localstorage";
 import { FormEvent } from "react";
 
 interface ModalTypes {

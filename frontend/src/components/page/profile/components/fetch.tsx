@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Profile } from "./profile/profile";
-import { getUserInfo, UserTypes } from "../../../../services/profile.service";
-import { ProfileTypes } from "../../../../services/profile.service";
+import { getUserInfo } from "../../../../services/profile.service";
+import { ProfileTypes, UserTypes } from "../../../../interface/profile";
 import { useDispatch } from "react-redux";
-import { setAvatar, setLoading, User } from "../../../../reducer/auth";
+import { setImage, setLoading, User } from "../../../../reducer/auth";
 import StartSelling from "./seller/startSelling";
 import Loading from "../../../loading/loading";
 import { AVATAR_URL } from "../../../../helper/staticImage";
-import { getUserId } from "../../../../helper/localstorage";
 
 enum Role {
   SELLER = 1,
@@ -17,7 +16,7 @@ enum Role {
 const DataFetch = ({ name }: { name: string }): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserTypes>();
   const [isFetching, setFetching] = useState(false);
-  const [sharingState, setState] = useState<string>("");
+  const [sharingState, setState] = useState("");
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -37,7 +36,7 @@ const DataFetch = ({ name }: { name: string }): JSX.Element => {
 
   useEffect(() => {
     getData();
-    dispatch(setAvatar(AVATAR_URL + sharingState));
+    dispatch(setImage(AVATAR_URL + sharingState));
   }, [isFetching, sharingState]);
 
   if (userInfo == undefined) {

@@ -1,12 +1,12 @@
 import axiosInstance from "../config/axiosInstance";
-import { getStoreId, getCartId } from "../helper/localstorage";
+import get from "../helper/localstorage";
 import { CartUser, CartProduct } from "../interface/cart";
 
 const getCart = (): Promise<CartUser[]> | undefined => {
-  if (getCartId() == "") return;
+  if (get.cartId == "") return;
   return new Promise((resolve, reject) => {
     axiosInstance
-      .get("/cart/" + getCartId())
+      .get("/cart/" + get.cartId)
       .then((res) => {
         resolve(res.data.result);
       })
@@ -16,10 +16,10 @@ const getCart = (): Promise<CartUser[]> | undefined => {
   });
 };
 const moveToCart = (productId: string) => {
-  if (getCartId() == "") return;
+  if (get.cartId == "") return;
   return new Promise((resolve, reject) => {
     axiosInstance
-      .post("/cart/" + getCartId() + `/${productId}`)
+      .post("/cart/" + get.cartId + `/${productId}`)
       .then((res) => {
         console.log(res.data);
         resolve(res.data);

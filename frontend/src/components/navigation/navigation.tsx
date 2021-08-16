@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "./nav.css";
 import { Menu } from "./menu";
 import { Link, useHistory } from "react-router-dom";
-import { getStoreId } from "../../helper/localstorage";
 import authService from "../../services/auth.service";
 import { ListNav } from "./menu";
 

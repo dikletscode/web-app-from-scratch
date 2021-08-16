@@ -96,6 +96,7 @@ const StartSelling = ({ profile }: { profile: ProfileTypes[] }) => {
         </div>
       ) : (
         <div style={styles.modal}>
+          <i className="fa fa-times"></i>
           <div>
             <p>please complete your information</p>
           </div>

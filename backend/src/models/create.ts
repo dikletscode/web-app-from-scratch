@@ -51,18 +51,7 @@ export const createProduct = (obj: Product, storeId: number) => {
     },
   });
 };
-// export const addGLobalProduct = (productId: number) => {
-//   return prisma.productBuyyer.create({
-//     data: {
-//       product: { connect: { id: productId } },
-//     },
-//   });
-// };
-// export const getGlobalProduct = () => {
-//   return prisma.productBuyyer.findMany({
-//     include: { product: true },
-//   });
-// };
+
 export const addToCart = (productId: string, cartId: number) => {
   return prisma.productOnCart.create({
     data: {

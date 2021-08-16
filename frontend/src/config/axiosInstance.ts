@@ -1,7 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { setLogin } from "../reducer/auth";
+import axios from "axios";
+
 import { setError } from "../reducer/error";
 import { store } from "../store";
 
@@ -13,10 +11,7 @@ const axiosInstance = axios.create({
 });
 const { dispatch } = store;
 
-// let data: any = JSON.parse(localStorage.getItem("data") || "{}") || {};
-
 const refresh = () => {
-  // console.log(data.refreshToken, "toke");
   return axiosInstance.get("/refreshToken");
 };
 
@@ -27,7 +22,6 @@ axiosInstance.interceptors.response.use(undefined, (err) => {
     refresh()
       .then((res) => {
         window.location.reload();
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -36,9 +30,7 @@ axiosInstance.interceptors.response.use(undefined, (err) => {
   if (status == 400) {
     dispatch(setError({ errorCode: 400, isError: true }));
   }
-  // if (status == 404) {
-  //   window.location.href = "/404";
-  // }
+
   console.log(err, "intercept");
   return Promise.reject(err);
 });

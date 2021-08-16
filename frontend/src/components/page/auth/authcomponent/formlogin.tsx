@@ -2,16 +2,15 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Input } from "./microComponent/input";
 import { styles } from "./style/form.style";
 import { AdditionalLogin } from "./microComponent/additional";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import auth from "../../../../services/auth.service";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLogin, setLoading } from "../../../../reducer/auth";
-import { RootState } from "../../../../store";
-import { LoginTypes } from "../../../../services/auth.service";
+
+import { LoginTypes } from "../../../../interface/auth";
 
 const Form = () => {
   const history = useHistory();
-  const loginStatus = useSelector((state: RootState) => state.auth.isLogin);
   const dispatch = useDispatch();
   const [msg, setMsg] = useState("");
   const [data, setData] = useState<LoginTypes>({
@@ -28,7 +27,6 @@ const Form = () => {
       await auth.login(data);
       dispatch(setLogin(true));
       history.push("/");
-      // window.location.reload();
     } catch (error) {
       setMsg(error.response.data.error);
       dispatch(setLogin(false));

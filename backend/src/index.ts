@@ -5,14 +5,16 @@ import seller from "./routes/seller";
 import redis from "redis";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-const app = express();
 import path from "path";
+import http from "http";
+const app = express();
 
 export const client = redis.createClient({
   host: "localhost",
   port: 6379,
   password: "redispassword123",
 });
+
 client.on("ready", () => {
   console.log("connected to redis");
 });

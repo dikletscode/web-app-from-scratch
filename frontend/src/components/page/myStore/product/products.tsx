@@ -4,7 +4,7 @@ import { IMAGE_PRODUCT_URL } from "../../../../helper/staticImage";
 import { useEffect } from "react";
 import { useState } from "react";
 import Convert from "./convertCurrency";
-import { ProductSeller } from "../../../../services/selling.service";
+import { ProductSeller } from "../../../../interface/seller";
 
 interface ArrProduct {
   product: ProductSeller[];
@@ -25,9 +25,7 @@ const ProductCard: React.FC<ArrProduct> = ({ product }) => {
 
               <div style={style.desc}>
                 <p>{item.productName}</p>
-                <small>
-                  <Convert number={`${item.price}`} />
-                </small>
+                <small>{Convert(item.price.toString())}</small>
               </div>
               <div style={style.footer}>
                 <div>

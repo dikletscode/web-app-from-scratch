@@ -8,7 +8,7 @@ import style from "./profile.style";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../store";
 import Loading from "../../../../loading/loading";
-import { setAvatar } from "../../../../../reducer/auth";
+import { setImage } from "../../../../../reducer/auth";
 
 interface Toogle {
   fullname: boolean;
@@ -55,7 +55,7 @@ export const Profile: FC<{ userInfo: UserTypes }> = ({ userInfo }) => {
     if (e.target.files) {
       const dataOnChange: Blob = e.target.files[0];
       let preview = URL.createObjectURL(e.target.files[0]);
-      dispatch(setAvatar(preview));
+      dispatch(setImage(preview));
       setImgPreview(preview);
       setImg(dataOnChange);
     }

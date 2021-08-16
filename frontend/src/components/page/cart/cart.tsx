@@ -2,22 +2,25 @@ import React from "react";
 import style from "./style";
 import cartService from "../../../services/cart.service";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import Confirm from "./confirm";
 import store from "./icon-store.png";
 import { CartUser } from "../../../interface/cart";
 import { useState } from "react";
 import { IMAGE_PRODUCT_URL } from "../../../helper/staticImage";
 import Convert from "../myStore/product/convertCurrency";
+import { useRef } from "react";
 
 const Cart = () => {
   const [cart, setCart] = useState<CartUser[]>([]);
   const [checked, setChecked] = useState<boolean[]>([]);
   const [count, setCount] = useState<number[]>([]);
+  const [price, setPrice] = useState<number[]>([]);
+  const [total, setTotal] = useState(0);
+
+  const value = useRef<number>(0);
   const getCart = async () => {
     try {
       let data: CartUser[] | undefined = await cartService.getCart();
-      console.log(data, "daua");
       if (data != undefined) setCart(data);
     } catch (error) {
       console.log(error);
@@ -29,21 +32,33 @@ const Cart = () => {
     arr[index] == true ? (arr[index] = false) : (arr[index] = true);
     setChecked(arr);
   };
-  const increment = (index: number) => {
+  const increment = (index: number, limit: number) => {
     const arrs = [...count];
-    arrs[index] = arrs[index] + 1;
+    if (arrs[index] >= limit) {
+      arrs[index] = arrs[index] + 0;
+    } else {
+      arrs[index] = arrs[index] + 1;
+    }
     setCount(arrs);
   };
+
   const decrement = (index: number) => {
     const arrs = [...count];
-    arrs[index] = arrs[index] - 1;
+    if (arrs[index] > 0) {
+      arrs[index] = arrs[index] - 1;
+    } else {
+      arrs[index] = arrs[index] - 0;
+    }
     setCount(arrs);
   };
-  useEffect(() => {
-    getCart();
 
-    setChecked(new Array(cart.length).fill(false));
-    setCount(new Array(cart.length).fill(0));
+  useEffect(() => {
+    setChecked([...new Array(cart.length).fill(true)]);
+    getCart();
+    setCount(new Array(cart.length).fill(1));
+    cart.forEach((item, index) => {
+      setPrice((prev) => [...prev, parseInt(item.product.price)]);
+    });
   }, [cart.length]);
 
   return (
@@ -71,25 +86,12 @@ const Cart = () => {
                     <p>{item.product.storeAddress.nameStore} Store</p>
                   </div>
                   <>
-                    <div
-                      style={{
-                        padding: "2px",
-                        display: "flex",
-                        width: "90%",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    <div style={style.oneProduct}>
                       <div style={{ width: "110px" }}>
                         <img
                           src={IMAGE_PRODUCT_URL + item.product.images}
                           alt=""
-                          style={{
-                            height: "110px",
-                            width: "100px",
-                            borderRadius: "5%",
-                            objectFit: "cover",
-                          }}
+                          style={style.images}
                         />
                       </div>
                       <div style={{ width: "200px", padding: "20px" }}>
@@ -116,7 +118,9 @@ const Cart = () => {
                         >
                           <i
                             className="fa fa-chevron-up"
-                            onClick={() => increment(cart.indexOf(item))}
+                            onClick={() =>
+                              increment(cart.indexOf(item), item.product.total)
+                            }
                           ></i>
                           <p>{count[cart.indexOf(item)]}</p>
                           <i
@@ -129,7 +133,9 @@ const Cart = () => {
                         <label className="container">
                           <input
                             type="checkbox"
+                            style={style.check}
                             id={item.productId}
+                            defaultChecked={true}
                             onChange={() => handleChange(cart.indexOf(item))}
                           />
                           <span className="checkmark"></span>
@@ -143,43 +149,7 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <div style={style.confirm}>
-        <div>
-          <p>Konfirmmasi Pembayaran</p>
-          <p>total Pembayaran :</p>
-          {cart.map((item) => {
-            if (checked[cart.indexOf(item)] == true) {
-              return (
-                <p>
-                  {" "}
-                  {item.product.productName}:{" "}
-                  {parseInt(item.product.price) * count[cart.indexOf(item)]}
-                </p>
-              );
-            }
-          })}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            alignContent: "flex-end",
-          }}
-        >
-          <p>Paymen Method : </p>
-          <select
-            name=""
-            id=""
-            style={{ border: "none", backgroundColor: "white", height: "30px" }}
-          >
-            <option value="Alfamart">Alfamart</option>
-            <option value="Alfamart">Indomaret</option>
-            <option value="Alfamart">M-Banking</option>
-            <option value="Alfamart">Gopay</option>
-          </select>
-        </div>
-      </div>
+      <Confirm cart={cart} count={count} checked={checked} price={price} />
     </div>
   );
 };
